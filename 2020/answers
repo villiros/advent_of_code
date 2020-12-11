@@ -1,0 +1,55 @@
+p01a    p01_test.txt    514579
+p01a    p01.txt         158916
+p01b    p01_test.txt    241861950
+p01b    p01.txt         165795564
+
+p02a    p02.txt         469
+p02b    p02.txt         267
+
+p03a    p03.txt         252
+p03a    p03_test.txt    7
+p03b    p03.txt         2608962048
+p03b    p03_test.txt    336
+
+p04a    p04.txt         204
+p04a    p04_test.txt    2
+p04b    p04.txt         179
+p04b    p04_test.txt    2
+p04b    p04_test2.txt   0
+p04b    p04_test3.txt   4
+
+p05a    p05.txt         965
+p05b    p05.txt         524
+
+p06a    p06.txt         6714
+p06a    p06_test.txt    11
+p06b    p06.txt         3435
+p06b    p06_test.txt    6
+
+p07a    p07.txt         197
+p07a    p07_test.txt    4
+p07b    p07.txt         85324
+p07b    p07_test.txt    32
+p07b    p07_test2.txt   126
+
+p08a    p08.txt         2080
+p08a    p08_test.txt    5
+p08b    p08.txt         2477
+p08b    p08_test.txt    8
+
+p09a    p09.txt         258585477
+#p09a    p09_test.txt    127
+p09b    p09.txt         36981213
+#p09b    p09_test.txt    62
+
+p10a    p10.txt         2376
+p10a    p10_test.txt    35
+p10a    p10_test2.txt   220
+p10b    p10.txt         129586085429248
+p10b    p10_test.txt    8
+p10b    p10_test2.txt   19208
+
+p11a    p11.txt         2247
+p11a    p11_test.txt    37
+p11b    p11.txt         2011
+p11b    p11_test.txt    26
