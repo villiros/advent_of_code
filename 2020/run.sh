@@ -1,6 +1,7 @@
 #!/bin/bash
 
 shopt -s nullglob
+cd "$(dirname "$0")"
 
 ALL_GOOD=1
 
