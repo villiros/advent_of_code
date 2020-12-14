@@ -59,3 +59,16 @@ p12a    p12.txt         1838
 
 p12b    p12_test.txt    286
 p12b    p12.txt         89936
+
+p13a    p13.txt         2165
+p13a    p13_test.txt    295
+
+p13b    p13.txt         534035653563227
+p13b    p13_test.txt    1068781
+
+p14a    p14.txt         14839536808842
+p14a    p14_test.txt    165
+
+p14b    p14.txt         4215284199669
+p14b    p14_test.txt   SKIP
+p14b    p14_test2.txt   208
