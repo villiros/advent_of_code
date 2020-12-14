@@ -16,9 +16,17 @@ run() {
         for inp in input/${problem}*.txt; do
             for sol in ${problem}${part}*.{sh,awk,py}; do
                 echo '  ==' $part ./$sol $inp
-                output=$(./$sol $inp)
-                if [[ $? -ne 0 ]]; then
-                    output="$output"$'\n'"Non-zero exit code"
+                
+                # expected answer
+                expected=$(grep "^${problem}${part}" answers | grep "${inp#input/}" | awk '{print $3}')
+                
+                if [[ "$expected" == "SKIP" ]]; then
+                    output="SKIP"
+                else
+                    output=$(./$sol $inp)
+                    if [[ $? -ne 0 ]]; then
+                        output="$output"$'\n'"Non-zero exit code"
+                    fi
                 fi
                 
                 # last line
@@ -26,10 +34,10 @@ run() {
                 # all but last line
                 output=${output%$'\n'*}
                 
-                # expected answer
-                expected=$(grep "^${problem}${part}" answers | grep "${inp#input/}" | awk '{print $3}')
-                if [[ ! -z "$result" && "$result" == "$expected" ]]; then
+                if [[ ! -z "$result" && "$expected" != "SKIP" && "$result" == "$expected" ]]; then
                     echo '    ' OK
+                elif [[ "$expected" == "SKIP" ]]; then
+                    echo '    ' SKIP
                 elif [[ -z "$expected" ]]; then
                     echo '    ' NO ANSWER
                 else
