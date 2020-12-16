@@ -78,3 +78,9 @@ p15a    p15_test.txt    436
 
 p15b    p15.txt         16671510
 p15b    p15_test.txt    SKIP
+
+p16a    p16.txt         30869
+p16a    p16_test.txt    71
+
+p16b    p16_test2.txt   132
+p16b    p16.txt         4381476149273
