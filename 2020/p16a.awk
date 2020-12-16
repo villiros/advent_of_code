@@ -1,6 +1,6 @@
 #!/usr/bin/env awk -f
 BEGIN {
-    FS = "(: )|( or )|-"
+    FS = ": | or |-"
 }
 
 / or / && NF == 5 {
