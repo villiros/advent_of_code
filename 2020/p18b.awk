@@ -62,13 +62,7 @@ function do_exp(s, p,    t, inside) {
     printf "exp       %5s %5s %s x %s\n", p, stpeek(), substr(s, 1, p-1), substr(s, p)
     stprint()
     
-    if (at(s, p) == "(") {
-        p = do_exp(s, p + 1)
-        if (at(s, p) != ")") print "ASSERT 3"
-        p++
-    } else {
-        p = do_param(s, p)
-    }
+    p = do_param(s, p)
     
     while (p <= length(s) && at(s, p) != ")") {
         t = at(s, p)
