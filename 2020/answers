@@ -90,3 +90,16 @@ p17a    p17_test.txt    112
 
 p17b    p17_test.txt    848
 p17b    p17.txt         1180
+
+p18a    p18_test1.txt   71
+p18a    p18_test2.txt   51
+p18a    p18_test3.txt   13632
+p18a    p18.txt         69490582260
+
+p18b    p18_test1.txt   231
+p18b    p18_test2.txt   51
+p18b    p18_test3.txt   23340
+p18b    p18_test4.txt   46
+p18b    p18_test5.txt   1445
+p18b    p18_test6.txt   669060
+p18b    p18.txt         362464596624526
