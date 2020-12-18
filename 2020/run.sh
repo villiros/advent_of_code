@@ -46,8 +46,8 @@ run() {
                     echo '    ' Expected: $expected
                     echo '    ' Actual: $result
                     if [[ ! -z "$output" ]]; then
-                        >&2 echo '    ' Other output:
-                        >&2 echo "$output"
+                        echo '    ' Other output:
+                        echo "$output"
                     fi
                 fi
             done
