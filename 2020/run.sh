@@ -13,7 +13,7 @@ run() {
     echo == $problem
     
     for part in {a,b}; do
-        for inp in input/${problem}*.txt; do
+        for inp in input/${problem}_*.txt input/${problem}.txt; do
             for sol in ${problem}${part}*.{sh,awk,py}; do
                 echo '  ==' $part ./$sol $inp
                 
