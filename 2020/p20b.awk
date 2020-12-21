@@ -152,6 +152,7 @@ function find_for_pos(target_edge_val, target_edge,    i, tn, numrots, numhflips
 }
 
 # Starting with anchored tile at (x, y), anchor all others recursively
+# This is very brute-forced.
 function populate(x, y,    e, next_tile) {
     for (e=0; e <= 3; e++) {
         next_tile = find_for_pos(getedge(tilemap[x,y], e, 0), (e + 2) % 4)
