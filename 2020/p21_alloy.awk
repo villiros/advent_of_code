@@ -36,9 +36,9 @@ BEGIN {
         seen_allergens[$i] = 1
     }
     
-    printf "fact Rule_%s {\n", NR
+    printf "\nfact Rule_%s {\n", NR
     for (i = last_ing + 2; i <= NF; i++) {
-        print "one (", $i, ".contains & ("
+        printf "    one (%s.contains & (", $i
         for (j=1; j <= last_ing; j++) {
             printf "%s %s ", $j, (j < last_ing ? "+" : "")
         }
@@ -56,15 +56,15 @@ END {
         print "one sig ", ("Count_" i "_" seen_sigs[i]), " extends CountOfUn {}"
     }
 
-    print "fact IngCounts {"
+    print "\nfact IngCounts {"
     for (i in seen_sigs) {
-        print i, ".count = ", ("Count_" i "_" seen_sigs[i])
+        printf "    %s.count = %s\n", i, ("Count_" i "_" seen_sigs[i])
     }
     print "}"
-    print "fact OneAlergenPerIng {all a, b: Allergen | a != b => no (a.contains & b.contains)}"
-    print "one sig NoAllerg {contains: set Ingredient, count_appear: set CountOfUn}"
-    print "fact NoAllergSet {NoAllerg.contains = Ingredient - Allergen.contains"
-    print "     NoAllerg.count_appear = NoAllerg.contains.count"
+    print "fact OneAlergenPerIng {\n    all a, b: Allergen | a != b => no (a.contains & b.contains)\n}"
+    print "one sig NoAllerg {\n    contains: set Ingredient,\n    count_appear: set CountOfUn\n}"
+    print "fact NoAllergSet {\n    NoAllerg.contains = Ingredient - Allergen.contains"
+    print "    NoAllerg.count_appear = NoAllerg.contains.count"
     #print "    NoAllerg.count_appear = (sum x: NoAllerg.contains | x.count)"
     print "}"
     
