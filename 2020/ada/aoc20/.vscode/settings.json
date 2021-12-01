@@ -1,0 +1,5 @@
+{
+    "ada.projectFile": "aoc20.gpr",
+    "ada.trace.server": "verbose",
+    "debug.allowBreakpointsEverywhere": true
+}

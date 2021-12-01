@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb2) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/.objs/aoc20_main",
+            "args": ["-p", "p01a"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "MIMode": "gdb",
+            "setupCommands": [
+                // {
+                //     "description": "Catch exceptions",
+                //     "text": "catch exception",
+                //     "ignoreFailures": false
+                // }
+            ],
+            "preLaunchTask": "ada: Build current project",
+            "sourceFileMap": {
+                "/Volumes/Miscellaneous1/x86_64/gcc-11.2.0/gcc/ada/rts": "/opt/gcc-11.2.0//lib/gcc/x86_64-apple-darwin15/11.2.0/adainclude"
+            }
+        }
+    ]
+}
