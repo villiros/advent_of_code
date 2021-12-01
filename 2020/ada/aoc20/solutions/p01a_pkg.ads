@@ -4,6 +4,14 @@ with Ada.Containers.Vectors;
 with Harness; use Harness;
 
 package p01a_pkg is
+    type p01a is private;
+    
+    function Make return SolutionAcc;
+
+    procedure Solve (Self : in out p01a;
+                     InData : in Ada.Text_IO.File_type;
+                     Result : out ResultType);
+private
     package InputPkg is new
         Ada.Containers.Vectors(Index_Type => Positive, Element_Type => Integer);
     use InputPkg;
@@ -13,8 +21,4 @@ package p01a_pkg is
         Input : InputType := InputPkg.Empty_Vector;
     end record;
 
-    --function Name (Self : p01a) return ProblemName;
-    procedure Solve (Self : in out p01a;
-                     InData : in Ada.Text_IO.File_type;
-                     Result : out ResultType);
 end p01a_pkg;

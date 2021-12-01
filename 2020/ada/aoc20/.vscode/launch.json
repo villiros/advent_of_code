@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/.objs/aoc20_main",
-            "args": ["-p", "p01a"],
+            "args": ["-p", "p02a"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

@@ -8,6 +8,16 @@ with Utils; use Utils;
 package body Harness is
 package CMD renames Ada.Command_Line;
 
+    procedure CmdSetup is
+    begin
+        for i in 1..CMD.Argument_Count loop
+            if CMD.Argument(i) = "-d" then
+                Put_Line("  # Printing debug logs");
+                PrintDebug := True;
+            end if;
+        end loop;
+    end CmdSetup;
+
 function CmdGetSolutionsFilter return ProblemNames is
     BadArgument : exception;
     Result : ProblemNames;
@@ -41,7 +51,7 @@ begin
 
     Main:
     loop
-        while SkipNl (File) loop
+        while SkipNl (File) and not End_Of_File(File) loop
             null;
         end loop;
 

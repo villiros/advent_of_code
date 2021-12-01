@@ -1,14 +1,17 @@
 with p01a_pkg;
 with p01b_pkg;
+with p02a_pkg;
 
 package body solutions is
     function GetSolution(Name : ProblemName) return SolutionAcc is
         InvalidSolutionName : exception;
     begin
         if Name = "p01a" then
-            return new p01a_pkg.p01a;
+            return p01a_pkg.Make;
         elsif Name = "p01b" then
-            return new p01b_pkg.p01b;
+            return p01b_pkg.Make;
+        elsif Name = "p02a" then
+            return p02a_pkg.Make;
         else
             raise InvalidSolutionName with "Invalid solution name";
         end if;

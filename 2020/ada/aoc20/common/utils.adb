@@ -40,7 +40,7 @@ package body Utils is
     begin
         if not SkipWs(File) then
             -- End of file
-            return False;
+            return True;
         else
             case PeekChar (File) is
                 when ASCII.LF =>
@@ -51,6 +51,12 @@ package body Utils is
             end case;
         end if;
     end SkipNl;
+
+    function GetAtom (File : File_type; Delims : String := "") return InputStr is
+        Result : String := GetAtom (File, Delims);
+    begin
+        return InputStrPkg.To_Bounded_String(Result);
+    end GetAtom;
 
     function GetAtom (File : File_type; Delims : String := "") return String is
         Result : InputStr := InputStrPkg.Null_Bounded_String;
@@ -97,4 +103,20 @@ package body Utils is
             end case;
         end if;
     end GetInt;
+
+    function GetChar(File : File_Type) return Character is
+        c : Character;
+    begin
+        if not SkipWs (File) then
+            return ASCII.NUL;
+        end if;
+
+        case PeekChar (File) is
+            when ASCII.LF =>
+                return ASCII.NUL;
+            when others =>
+                Get_Immediate (File, c);
+                return c;
+        end case;
+    end GetChar;
 end Utils;

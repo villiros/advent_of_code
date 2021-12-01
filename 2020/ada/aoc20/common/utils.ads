@@ -17,8 +17,12 @@ package Utils is
 
     -- Read a string from input, first skipping ws, then stopping before the first whitespace, newline, or character in delims
     function GetAtom (File : File_type; Delims : String := "") return String;
+    function GetAtom (File : File_type; Delims : String := "") return InputStr;
 
     -- Read an integer from input, first skipping ws, then stopping before the first whitespace, newline, or non-string character
     -- Throws an exception if there is non-ws to read on the line, but it's not an integer.
     procedure GetInt(File : File_Type; Result : out Integer; DidRead : out Boolean);
+
+    -- Read a single character and return it (after skipping ws). If newline/eof is reached, returns nul
+    function GetChar(File : File_Type) return Character;
 end Utils;

@@ -25,9 +25,14 @@ package Harness is
                      Result : out ResultType) is abstract;
 
     --
-    -- Command line
+    -- Command line and helpers;
     --
+    PrintDebug : Boolean := False;
+
     function CmdGetSolutionsFilter return ProblemNames;
+
+    -- Checks for standard command-line options
+    procedure CmdSetup;
 
     --
     -- Answers db

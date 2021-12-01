@@ -4,6 +4,11 @@ with Ada.Containers.Vectors;
 with utils; use utils;
 
 package body p01b_pkg is
+    function Make return SolutionAcc is
+    begin
+        return new p01b;
+    end Make;
+
     procedure Solve (Self : in out p01b;
                      InData : in Ada.Text_IO.File_type;
                      Result : out ResultType) is

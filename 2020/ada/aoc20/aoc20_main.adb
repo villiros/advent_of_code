@@ -9,6 +9,7 @@ procedure aoc20_main is
     Ans : Answers;
     WasOk : Boolean := True;
 begin
+    CmdSetup;
     Ans := GetAnswers(CmdGetSolutionsFilter);
     Put_Line ("   # Running " & Integer'Image(Integer(Ans.Length)) & " cases");
     for E of Ans loop
