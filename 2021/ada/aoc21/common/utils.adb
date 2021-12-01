@@ -1,122 +1,134 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Maps; use Ada.Strings.Maps;
 
 package body Utils is
     use InputStrPkg;
 
-    function PeekChar(File: File_Type) return Character is
+    function PeekChar(File: File_Type; DoSkipWs : Boolean := False) return Character is
         c : Character;
         is_eol : Boolean;
     begin
-        Look_Ahead(File, c, is_eol);
-        if is_eol then
-            return ASCII.LF;
+        if DoSkipWs then
+            SkipWs (File);
+        end if;
+
+        if End_Of_File(File) then
+            return ASCII.NUL;
         else
-            return c;
+            Look_Ahead(File, c, is_eol);
+            if is_eol then
+                return ASCII.LF;
+            else
+                return c;
+            end if;
         end if;
     end PeekChar;
 
-    function SkipWs(File : File_Type) return Boolean is
+    -- Advance by one character
+    procedure Advance(File : File_Type)
+        with Pre => not End_Of_File(File)
+        is
         c : Character;
+        pragma Unreferenced(c);
     begin
-        while not End_Of_File(File) loop
-            c := PeekChar (File);
-            if c = ASCII.LF then
-                return True;
-            else
-                case c is
-                    when ' ' | ASCII.HT => Get_Immediate(File, c);
-                    when others => return True;
-                end case;
-            end if;
+        Get_Immediate(File, c);
+    end Advance;
+
+    -- Skip whitespace until newline, eof, or any other character
+    procedure SkipWs(File : File_Type) is
+    begin
+        loop
+            exit when (case PeekChar(File) is
+                        when ' ' | ASCII.HT => False,
+                        when others => True);
+            Advance (File);
         end loop;
-        return False;
     end SkipWs;
 
-    function SkipNl(File : File_type) return Boolean is
-        NotAWs : exception;
-        c : Character;
-        is_out : Boolean;
+    procedure SkipAll(File : File_Type) is
     begin
-        if not SkipWs(File) then
-            -- End of file
-            return True;
-        else
-            case PeekChar (File) is
-                when ASCII.LF =>
-                    Get_Immediate(File, c, is_out);
-                    return True;
-                when others =>
-                    return False;
-            end case;
-        end if;
-    end SkipNl;
+        loop
+            exit when (case PeekChar(File) is
+                       when ASCII.nul | ASCII.LF => True,
+                       when others => False);
+            Advance (File);
+        end loop;
+    end SkipAll;
 
-    function GetAtom (File : File_type; Delims : String := "") return InputStr is
-        Result : String := GetAtom (File, Delims);
+    function AdvanceLine(File : File_Type) return Boolean
+        is
     begin
-        return InputStrPkg.To_Bounded_String(Result);
-    end GetAtom;
+        SkipWs(File);
+        case PeekChar (File) is
+            when ASCII.nul => return False;
+            when ASCII.LF => Advance(File); return not end_of_file(File);
+            when others => raise ReadFailed;
+        end case;
+    end AdvanceLine;
 
-    function GetAtom (File : File_type; Delims : String := "") return String is
+    procedure AdvanceLine(File : File_Type) is
+        ingored : Boolean := AdvanceLine (File);
+    begin
+        null;
+    end AdvanceLine;
+
+    function GetAtom(File : File_Type; Delims : Character_Set := Null_Set) return InputStr is
         Result : InputStr := InputStrPkg.Null_Bounded_String;
         c : Character;
     begin
-        if not SkipWs (File) then
-            return "";
+        SkipWs(File);
+
+        loop
+            c := PeekChar (File);
+            exit when c = ASCII.NUL or c = ASCII.LF or c = ' ' or c = ASCII.HT;
+            exit when Is_In (c, Delims);
+            Result := Append (Result, "" & GetChar (File));
+        end loop;
+
+        if Length(Result) < 1 then
+            raise ReadFailed;
         else
-            while not End_Of_File(File) loop
-                c := PeekChar (File);
-                if c = ASCII.LF then
-                    return To_String (Result);
-                else
-                    if (c = ' ' or c = ASCII.HT or Index(Delims, "" & c) > 0) then
-                        return To_String (Result);
-                    else
-                        Get_Immediate(File, c);
-                        Result := Append (Result, "" & c);
-                    end if;
-                end if;
-            end loop;
-            return To_String (Result);
+            return Result;
         end if;
     end GetAtom;
 
-    procedure GetInt(File : File_Type; Result : out Integer; DidRead : out Boolean) is
+    function GetInt(File : File_Type; Required : Boolean := True; Default : Integer := 0)
+        return Integer is
         package Int_IO is new Integer_IO(Integer);
-        NotAnInt : exception;
+        function Error return Integer is
+        begin
+            if Required then
+                raise ReadFailed;
+            else
+                return Default;
+            end if;
+        end Error;
     begin
-        if not SkipWs (File) then
-            DidRead := False;
-            return;
-        else
-            case PeekChar (File) is
-                when ASCII.LF =>
-                    DidRead := False;
-                    return;
-                when '+' | '-' | '0'..'9' =>
+        SkipWs (File);
+        case PeekChar (File) is
+            when '+' | '-' | '0'..'9' =>
+                declare
+                    Result : Integer;
+                begin
                     Int_IO.Get(File, Result);
-                    DidRead := True;
-                    return;
-                when others =>
-                    raise NotAnInt;
-            end case;
-        end if;
+                    return Result;
+                end;
+            when others => return Error;
+        end case;
     end GetInt;
 
     function GetChar(File : File_Type) return Character is
         c : Character;
     begin
-        if not SkipWs (File) then
-            return ASCII.NUL;
-        end if;
-
-        case PeekChar (File) is
-            when ASCII.LF =>
-                return ASCII.NUL;
+        SkipWs (File);
+        c := PeekChar (File);
+        case c is
+            when ASCII.LF | ASCII.NUL => raise ReadFailed;
             when others =>
-                Get_Immediate (File, c);
+                Advance (File);
                 return c;
         end case;
     end GetChar;
+
 end Utils;

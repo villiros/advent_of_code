@@ -44,6 +44,9 @@ begin
 end CmdGetSolutionsFilter;
 
 function GetAnswers(Filter : ProblemNames := ProblemNamesPkg.Empty_Vector) return Answers is
+    use InputStrPkg;
+    use InputNamePkg;
+
     File : File_Type;
     Result : Answers;
 begin
@@ -51,42 +54,47 @@ begin
 
     Main:
     loop
-        while SkipNl (File) and not End_Of_File(File) loop
-            null;
+        -- Skip empty lines
+        loop
+            begin
+                exit when not AdvanceLine (File);
+            exception
+                when ReadFailed => exit;
+            end;
         end loop;
 
+        SkipWs (File);
+
+        -- Are we done with the file?
         exit when End_Of_File(File);
 
-        declare
-            should_produce : Boolean := True;
-            solution_name : String := GetAtom (File);
-            fname : String := GetAtom(File);
-            resultStr : String := GetAtom (File);
-        begin
-            if not Filter.Is_Empty then
-                should_produce := False;
-                for i of Filter loop
-                    if solution_name = i then
-                        should_produce := True;
-                        exit;
-                    end if;
-                end loop;
-            end if;
-            if (not should_produce) or resultStr = "SKIP" or solution_name(1) = '#' then
-                null;
-            elsif resultStr = "?" then
-                Result.Append (Answer'(Problem => solution_name,
-                                    Name => InputNamePkg.To_Bounded_String("../../input/" & fname),
-                                    ResultKnown => False,
-                                    Result => 0));
-            else
-                Result.Append (Answer'(Problem => solution_name,
-                                        Name => InputNamePkg.To_Bounded_String ("../../input/" & fname),
-                                        ResultKnown => True,
-                                        Result => ResultType'Value(resultStr)));
-            end if;
-
-        end;
+        -- At this point we *should* be at a line.
+        -- But check if it's a comment
+        if PeekChar (File) = '#' then
+            SkipAll (File);
+        else
+            -- Read in fields
+            declare
+                problem_name : ProblemName := To_String(GetAtom (File));
+                input_fname : InputName := To_Bounded_String(To_String("../../input/" & GetAtom (File)));
+                result_known : Boolean := PeekChar (File, DoSkipWs => True) /= '?';
+                expected_result : ResultType := (if result_known then ResultType(GetInt(File)) else 0);
+            begin
+                -- If result is not known, we didn't actually read the last field
+                if not result_known then
+                    SkipAll (File);
+                end if;
+                if not Filter.Is_Empty and then Filter.Find_Index (problem_name) = ProblemNamesPkg.No_Index then
+                    -- Not empty and problem name not in the filter. Skip;
+                    null;
+                else
+                    Result.Append (Answer'(Problem => problem_name,
+                                           Name => input_fname,
+                                           ResultKnown => result_known,
+                                           Result => expected_result));
+                end if;
+            end;
+        end if;
     end loop Main;
 
     return Result;

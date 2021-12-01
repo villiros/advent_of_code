@@ -20,15 +20,8 @@ package body p01b_pkg is
         WinSum1, WinSum2 : Natural := 0;
     begin
         while not End_Of_File(InData) loop
-            declare
-                n : Integer;
-                did_read : Boolean;
-            begin
-                GetInt(InData, n, did_read);
-                Assert(did_read);
-                Input.Append(n);
-                exit when not SkipNl (InData);
-            end;
+            Input.Append (GetInt(InData));
+            AdvanceLine (InData);
         end loop;
 
         for i in Input.First_Index..(Input.First_Index + 2) loop

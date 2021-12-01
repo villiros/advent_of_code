@@ -5,6 +5,6 @@ project aoc21 is
     for Source_Dirs use("./", "common/", "solutions/");
 
     package Compiler is
-        for Default_Switches ("Ada") use ("-g", "-E", "-gnatE", "-gnat2020");
+        for Default_Switches ("Ada") use ("-g", "-E", "-gnatE", "-gnat2020", "-gnata");
     end Compiler;
 end aoc21;

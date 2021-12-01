@@ -1,5 +1,8 @@
 {
     "ada.projectFile": "aoc21.gpr",
-    "ada.trace.server": "verbose",
-    "debug.allowBreakpointsEverywhere": true
+    //"ada.trace.server": "verbose",
+    "debug.allowBreakpointsEverywhere": true,
+    "files.exclude": {
+        ".objs": true
+    }
 }

@@ -18,15 +18,8 @@ package body p01a_pkg is
         NIncr : Natural := 0;
     begin
         while not End_Of_File(InData) loop
-            declare
-                n : Integer;
-                did_read : Boolean;
-            begin
-                GetInt(InData, n, did_read);
-                Assert(did_read);
-                Input.Append(n);
-                exit when not SkipNl (InData);
-            end;
+            Input.Append (GetInt(InData));
+            AdvanceLine (InData);
         end loop;
 
         for i in (Input.First_Index+1)..Input.Last_Index loop
@@ -36,23 +29,6 @@ package body p01a_pkg is
         end loop;
 
         Result := ResultType(NIncr);
-
-        -- for i in Input.First_Index..Input.Last_Index loop
-        --     --Put_Line (i'Image);
-        --     declare
-        --         n : Integer := Input(i);
-        --         t : Integer := Target - n;
-        --         el : InputPkg.Cursor := Input.Find (t, Input.To_Cursor(i + 1));
-        --     begin
-        --         if el /= InputPkg.No_Element then
-        --             Result := ResultType(n * Element(el));
-        --             return;
-        --         end if;
-        --     end;
-        -- end loop;
-
-        -- raise NoSolution;
-
     end Solve;
 
 end p01a_pkg;
