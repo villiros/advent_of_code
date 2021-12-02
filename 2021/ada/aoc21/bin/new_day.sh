@@ -1,11 +1,10 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+# Changes dir
+source $SCRIPT_DIR/common.sh
 
-cd $SCRIPT_DIR/..
-
-DAYNUM=$(ls solutions/p**.ads | awk -F/ '{printf("%02i\n", substr($2, 2, 2) + 1)}' | sort -n | tail -n1)
-DAY="p${DAYNUM}"
+DAY="p${NEXTDAYNUM}"
 
 read -p "Adding new day $DAY. Press ENTER to continue"
 
@@ -27,7 +26,7 @@ cat /tmp/advent_tmp > solutions/solutions.adb
 
 echo "
 # 
-# Day ${DAYNUM}
+# Day ${NEXTDAYNUM}
 #" >> answers
 
 echo "## DONE"

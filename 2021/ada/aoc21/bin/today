@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+# Changes dir
+source $SCRIPT_DIR/common.sh
+
+DAY="p${DAYNUM}"
+
+build || exit 1
+.objs/aoc21_main -p ${DAY}a -p ${DAY}b
