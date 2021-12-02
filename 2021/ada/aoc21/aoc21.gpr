@@ -1,7 +1,7 @@
 -- https://github-wiki-see.page/m/AdaCore/ada_language_server/wiki/getting-started
 project aoc21 is
     for Main use ("aoc21_main.adb");
-    for Object_Dir use ".objs";
+    for Object_Dir use ".objs/" & external("OBJSUBDIR", "");
     for Source_Dirs use("./", "common/", "solutions/");
 
     package Compiler is

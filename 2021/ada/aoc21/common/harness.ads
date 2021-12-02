@@ -7,8 +7,8 @@ package Harness is
     -- Common types
     --
 
-    -- 64-bit unsigned
-    type ResultType is range 0 .. (2 ** 64 - 1);
+    -- 64-bit signed
+    type ResultType is range 0 .. (2 ** 63 - 1);
     type ResultTypeDiff is range -(ResultType'Last)..(ResultType'Last);
     -- p\d\d[ab]
     subtype ProblemName is String(1..4);

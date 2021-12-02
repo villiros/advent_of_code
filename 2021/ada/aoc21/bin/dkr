@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+# Changes dir
+source $SCRIPT_DIR/common.sh
+
+IMGNAME="localhost/local:latest"
+
+docker build -t "$IMGNAME" docker/ || exit 1
+
+docker run -ti --rm \
+    --env OBJSUBDIR=docker \
+    -v `pwd`/../../:/advent/ \
+    -w /advent/ada/aoc21  \
+    "$IMGNAME" \
+    $@
