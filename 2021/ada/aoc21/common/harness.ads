@@ -3,6 +3,10 @@ with Ada.Strings.Bounded;
 with Ada.Containers.Vectors;
 
 package Harness is
+    --
+    -- Common types
+    --
+
     -- 64-bit unsigned
     type ResultType is range 0 .. (2 ** 64 - 1);
     type ResultTypeDiff is range -(ResultType'Last)..(ResultType'Last);
@@ -12,17 +16,24 @@ package Harness is
         Ada.Containers.Vectors(Index_Type => Positive, Element_Type => ProblemName);
     subtype ProblemNames is ProblemNamesPkg.Vector;
 
-    NoSolution : exception;
+    --
+    -- Solution dispatching
+    --
 
-    type Solution is abstract tagged null record;
+    -- Individual solution packages override this.
+    -- Then Solve is dispatched to the correct thing.
+    -- solutions package has a function with a list of all the solutions.
+    type SolutionDispatcher is abstract tagged record
+        Name : ProblemName;
+    end record;
+    type SolutionDispatcherAcc is access SolutionDispatcher'Class;
 
-    type SolutionAcc is access Solution'Class;
+    function Solve(SDisp : SolutionDispatcher;
+                   InData : in Ada.Text_IO.File_Type) return ResultType is abstract;
 
-    --function Name (Self : Solution) return ProblemName is abstract;
-
-    procedure Solve (Self : in out Solution;
-                     InData : in Ada.Text_IO.File_type;
-                     Result : out ResultType) is abstract;
+    -- Registered dispatchers
+    package DispatchersPkg is new Ada.Containers.Vectors(Index_Type => Positive, Element_Type => SolutionDispatcherAcc);
+    subtype Dispatchers is DispatchersPkg.Vector;
 
     --
     -- Command line and helpers;
@@ -40,16 +51,22 @@ package Harness is
     package InputNamePkg is new Ada.Strings.Bounded.Generic_Bounded_Length(160);
     subtype InputName is InputNamePkg.Bounded_String;
 
-    type InputFile is access File_Type;
-
     type Answer is record
-        Problem : ProblemName;
+        Dispatcher : SolutionDispatcherAcc;
+
         -- Name of the file containing the input
         Name : InputName;
+
         -- Expected result information;
         ResultKnown : Boolean;
         Result : ResultType := 0;
-    end record;
+    end record
+    with
+        Dynamic_Predicate =>
+            (Answer.Dispatcher /= null) and
+            (InputNamePkg.Length(Answer.Name) > 0) and
+            (if not Answer.ResultKnown then Answer.Result = 0 else True);
+
     package AnswersPkg is new
         Ada.Containers.Vectors(Index_Type => Positive, Element_Type => Answer);
     subtype Answers is AnswersPkg.Vector;

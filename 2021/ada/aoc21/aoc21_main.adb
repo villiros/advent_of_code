@@ -2,8 +2,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Command_Line;
 with Harness; use Harness;
-with solutions;
-with p01a_pkg;
 
 procedure aoc21_main is
     Ans : Answers;
@@ -13,7 +11,7 @@ begin
     Ans := GetAnswers(CmdGetSolutionsFilter);
     Put_Line ("   # Running " & Integer'Image(Integer(Ans.Length)) & " cases");
     for E of Ans loop
-        Put("   # " & E.Problem & " on " & InputNamePkg.To_String (E.Name) & " ");
+        Put("   # " & E.Dispatcher.Name & " on " & InputNamePkg.To_String (E.Name) & " ");
         if E.ResultKnown then
             Put_Line ("expect result " & E.Result'Image);
         else
@@ -21,13 +19,12 @@ begin
         end if;
 
         declare
-            SolAcc : SolutionAcc := solutions.GetSolution (E.Problem);
             InData : File_Type;
             Result : ResultType;
         begin
             Open (InData, In_File, InputNamePkg.To_String(E.Name));
 
-            SolAcc.Solve(InData, Result);
+            Result := Solve (E.Dispatcher.all, InData);
 
             if E.ResultKnown then
                 if Result = E.Result then

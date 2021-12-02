@@ -1,19 +1,24 @@
-with p01a_pkg;
-with p01b_pkg;
+with p00;
+with p01;
+-- ADVENT_ADD_WITH
 
 package body solutions is
-    function GetSolution(Name : ProblemName) return SolutionAcc is
+    function GetSolution(Name : ProblemName) return SolutionDispatcherAcc is
         InvalidSolutionName : exception;
+        
+        D : Dispatchers;
     begin
-        if Name = "p01a" then
-            return p01a_pkg.Make;
-        elsif Name = "p01b" then
-            return p01b_pkg.Make;
-        --elsif Name = "p02a" then
-        --    return p02a_pkg.Make;
-        else
-            raise InvalidSolutionName with "Invalid solution name";
-        end if;
+        p00.GetDispatchers(D);
+        p01.GetDispatchers(D);
+        -- ADVENT_ADD_GET_DISPATCHERS
+
+        for I of D loop
+            if I.Name = Name then
+                return I;
+            end if;
+        end loop;
+
+        raise InvalidSolutionName with "Invalid solution name";
     end GetSolution;
 
 end solutions;

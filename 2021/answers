@@ -1,4 +1,10 @@
 #
+# Harness test
+#
+p00a	p01_test.txt	0
+p00b	p01_test.txt	0
+
+#
 # Day 1
 #
 p01a	p01_test.txt	7
@@ -6,5 +12,3 @@ p01a	p01.txt		    1754
 
 p01b	p01_test.txt	5
 p01b	p01.txt		    1789
-   
-
