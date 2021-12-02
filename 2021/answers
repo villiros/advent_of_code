@@ -12,3 +12,12 @@ p01a	p01.txt		    1754
 
 p01b	p01_test.txt	5
 p01b	p01.txt		    1789
+
+# 
+# Day 02
+#
+p02a     p02_test0.txt     150
+p02a     p02.txt     1654760
+
+p02b     p02_test0.txt     900
+p02b     p02.txt     1956047400

@@ -38,6 +38,12 @@ package Utils is
     -- Read a string from input, first skipping ws, then stopping before the first whitespace, newline, or character in delims
     -- Raises ReadFailed if a string cannot be read
 
+    generic
+        type T is (<>);
+    function GetEnum(File : File_Type) return T;
+    -- Read an enum type from input, after skipping ws.
+    -- Raises ReadFailed if type cannot be read.
+
     function GetInt(File : File_Type; Required : Boolean := True; Default : Integer := 0) return Integer;
     -- Read an integer from input, first skipping ws, then stopping before the first whitespace, newline, or non-string character
     -- If Required is True, throws ReadFailed, otherwise returns Default if there's nothing to read.

@@ -8,8 +8,8 @@ package Harness is
     --
 
     -- 64-bit signed
-    type ResultType is range 0 .. (2 ** 63 - 1);
-    type ResultTypeDiff is range -(ResultType'Last)..(ResultType'Last);
+    type ResultType is range (-2**63) .. (2 ** 63 - 1);
+
     -- p\d\d[ab]
     subtype ProblemName is String(1..4);
     package ProblemNamesPkg is new

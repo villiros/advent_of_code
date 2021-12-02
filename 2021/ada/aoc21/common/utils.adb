@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Maps; use Ada.Strings.Maps;
+with Ada.Characters.Handling;
 
 package body Utils is
     use InputStrPkg;
@@ -92,6 +93,18 @@ package body Utils is
             return Result;
         end if;
     end GetAtom;
+
+    function GetEnum(File : File_Type) return T is
+        use Ada.Characters.Handling;
+        InStr : String := To_Lower(To_String(GetAtom(File)));
+    begin
+        for i in T'first..T'last loop
+            if InStr = To_Lower(i'image) then
+                return i;
+            end if;
+        end loop;
+        raise ReadFailed;
+    end GetEnum;
 
     function GetInt(File : File_Type; Required : Boolean := True; Default : Integer := 0)
         return Integer is

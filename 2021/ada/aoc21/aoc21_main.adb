@@ -33,7 +33,7 @@ begin
                     WasOk := False;
                     Put_Line ("FAIL: Got " & Result'Image &
                               " Expected " & E.Result'Image &
-                              " Diff " & ResultTypeDiff'Image(ResultTypeDiff(Result - E.Result)));
+                              " Diff " & ResultType'Image(ResultType(Result - E.Result)));
                 end if;
             else
                 Put_Line ("???: Got " & Result'Image);

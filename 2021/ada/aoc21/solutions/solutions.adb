@@ -1,5 +1,6 @@
 with p00;
 with p01;
+with p02;
 -- ADVENT_ADD_WITH
 
 package body solutions is
@@ -10,6 +11,7 @@ package body solutions is
     begin
         p00.GetDispatchers(D);
         p01.GetDispatchers(D);
+        p02.GetDispatchers(D);
         -- ADVENT_ADD_GET_DISPATCHERS
 
         for I of D loop
