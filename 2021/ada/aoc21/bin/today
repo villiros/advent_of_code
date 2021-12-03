@@ -7,4 +7,4 @@ source $SCRIPT_DIR/common.sh
 DAY="p${DAYNUM}"
 
 build || exit 1
-.objs/$OBJSUBDIR/aoc21_main -p ${DAY}a -p ${DAY}b
+.objs/$OBJSUBDIR/aoc21_main -p ${DAY}a -p ${DAY}b $@

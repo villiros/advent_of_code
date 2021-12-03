@@ -27,22 +27,22 @@ fi
 
 if [ "$1" = "test" ]; then
     for i in {0..9}; do
-        FNAME="../../input/${DAY}_test${i}.txt"
-        if [ ! -f "$FNAME" ]; then
+        FNAME="${DAY}_test${i}.txt"
+        if [ ! -f "../../input/$FNAME" ]; then
             break
         fi
     done
 
-    if [ -f "$FNAME" ]; then
+    if [ -f "../../input/$FNAME" ]; then
         echo "Error: run out of numbers"
         exit 1
     fi
 
     EXPECTED="$2"
 elif [ "$1" = "input" ]; then
-    FNAME="../../input/${DAY}.txt"
-    if [ -f "$FNAME" ]; then
-        echo "ERROR: Input $FNAME already exists"
+    FNAME="${DAY}.txt"
+    if [ -f "../../input/$FNAME" ]; then
+        echo "ERROR: Input ../../input/$FNAME already exists"
         exit 1
     fi
     EXPECTED='?'
