@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec gprclean -p aoc21.gpr
