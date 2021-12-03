@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Strings.Bounded;
+with Ada.Assertions;
 
 with utils; use utils;
 
@@ -18,18 +19,40 @@ package body p03 is
     ------------------------------------------------------------------------
     -- Common stuff
     ------------------------------------------------------------------------
-
     ------------------------------------
     -- Input data definitions
     ------------------------------------
-    subtype BitNumberType is ResultType range 0..63;
-    package EntryPkg is new Ada.Strings.Bounded.Generic_Bounded_Length(Max => 64); -- VLAD: ???
-    use EntryPkg;
-    subtype EntryType is EntryPkg.Bounded_String;
+    type EntryType is mod 2**(ResultType'Size - 1);
+    subtype BitNumberType is Integer range 0..(EntryType'Size - 1);
 
-    subtype GammaRateType is ResultType range 0..ResultType'Last;
-    subtype EpsRateType is ResultType range 0..ResultType'Last;
-    subtype BitType is ResultType range 0..1;
+    subtype GammaRateType is EntryType;
+    subtype EpsRateType is EntryType;
+    type BitType is mod 2;
+
+    ------------------------------------
+    -- Bit fiddling
+    ------------------------------------
+
+    -- Returns a bitmask with NumBits lowest set to 1
+    function Mask(NumBits : BitNumberType) return EntryType is
+    begin
+        return 2**(NumBits) - 1;
+    end Mask;
+
+    -- Left shift by count bits
+    function LShift(E : EntryType; Count : BitNumberType) return EntryType is
+    begin
+        return E * (2 ** Count);
+    end LShift;
+
+    -- Right shift by count bits
+    function RShift(E : EntryType; Count : BitNumberType) return EntryType
+    with
+        Post => LShift(RShift'Result, Count) = (E and (not Mask(Count)))
+    is
+    begin
+        return E / (2**Count);
+    end RShift;
 
     ------------------------------------
     -- Base solution and data reading
@@ -37,28 +60,43 @@ package body p03 is
 
     package InputPkg is new
         Ada.Containers.Vectors(Index_Type => Positive, Element_Type => EntryType);
-    use InputPkg;
+    use InputPkg; use type Ada.Containers.Count_Type;
     subtype InputType is InputPkg.Vector;
 
     type Solution is tagged record
         Input : InputType := InputPkg.Empty_Vector;
+        EntryBits : BitNumberType := 0;
     end record
     with
-        Dynamic_Predicate => (for all I of Solution.Input=> EntryPkg.Length(I) = EntryPkg.Length(Solution.Input.First_Element));
+        Dynamic_Predicate =>
+            (if Solution.EntryBits = 0
+                then
+                    Input = InputPkg.Empty_Vector
+                else
+                    Input.Length > 0 and
+                    (for all I of Solution.Input =>
+                        (Mask(Solution.EntryBits) >= I)) and
+                    (for some I of Solution.Input =>
+                        ((I and LShift(1, Solution.EntryBits - 1)) > 0)));
 
-    -- function GetBitN(self : Solution; pos : InputPkg.Extended_Index; bitn : BitNumberType) return BitType
-    -- with Pre => (pos >= self.Input.First_Index) and
-    --             (pos <= self.Input.Last_Index) and
-    --             (bitn <= InputStrPkg.Length(self.Input.First_Element))
-    -- is
-    -- begin
-    --     return 0;
-    -- end GetBitN;
-
-    procedure ReadInput(InData : File_Type; S : in out Solution'class) is
+    procedure ReadInput(self : in out Solution'class; InData : File_Type)
+    with
+        Post => self.Input.Length > 0
+    is
     begin
         while not End_Of_File(InData) loop
-            s.Input.Append (EntryPkg.To_Bounded_String(InputStrPkg.To_String(GetAtom(InData))));
+            declare
+                EStr : String := InputStrPkg.To_String(GetAtom(InData));
+                E : EntryType := EntryType'Value("2#" & EStr & "#");
+                NBits : BitNumberType := BitNumberType(EStr'Length);
+            begin
+                if self.Input.Length = 0 then
+                    self.EntryBits := NBits;
+                else
+                    Assert(self.EntryBits = NBits);
+                end if;
+                self.Input.Append(E);
+            end;
             AdvanceLine (InData);
         end loop;
     end ReadInput;
@@ -67,24 +105,20 @@ package body p03 is
     -- Part A
     ------------------------------------------------------------------------
 
-    function CountBits(Input : InputType; bitn : BitNumberType; target : Character) return ResultType
+    -- Count number of 1 bits at position bitn in Entries
+    function CountBits(self : Solution'Class; Entries : InputType; bitn : BitNumberType) return ResultType
     with
-        Pre => (bitn <= BitNumberType(EntryPkg.Length(Input.First_Element))) and
-               (target = '0' or target = '1')
+        Pre => (bitn < self.EntryBits) -- bitn is 0-indexed
     is
         result : ResultType := 0;
     begin
-        for I of Input loop
-            if Element(I, 1 + Natural(bitn)) = target then
-                result := result + 1;
-            end if;
+        for I of Entries loop
+            result := result + ResultType(RShift(I, bitn) and 1);
         end loop;
-        return ResultType(Length(Input)) - result;
+        return result;
     end CountBits;
 
     type SolutionA is new Solution with record
-        inputBitLen : BitNumberType := 0;
-
         Gamma : GammaRateType := 0;
         Eps : EpsRateType := 0;
     end record;
@@ -92,113 +126,98 @@ package body p03 is
     function Solve (SDisp : p03a;
                     InData : in Ada.Text_IO.File_type) return ResultType is
         s : SolutionA;
-        Input : InputType renames s.Input;
         Gamma : GammaRateType renames s.Gamma;
         Eps : EpsRateType renames s.Eps;
     begin
-        ReadInput(InData, s);
+        s.ReadInput(InData);
 
-        for bitn in 0..(Length(Input.First_Element) - 1) loop
-            Gamma := Gamma * 2;
-            Eps := Eps * 2;
-            if CountBits (Input, BitNumberType(bitn), '0') > ResultType(Input.Length) / 2 then
-                Gamma := Gamma + 1;
-            else
-                Eps := Eps + 1;
+        for bitn in 0..(s.EntryBits-1) loop
+            if s.CountBits (s.Input, bitn) > ResultType(s.Input.Length) / 2 then
+                Gamma := Gamma or GammaRateType(2**bitn);
             end if;
         end loop;
 
-        return Gamma * Eps;
+        Eps := EpsRateType(Gamma) xor Mask (s.EntryBits);
+
+        return ResultType(Gamma) * ResultType(Eps);
     end Solve;
 
     ------------------------------------------------------------------------
     -- Part B
     ------------------------------------------------------------------------
 
-    procedure RemoveBits(Input : in out InputType; bitn : BitNumberType; matching : Character)
+    -- Remove entries from CurInput where bitn is not IfNotMatches
+    function RemoveAtBit(CurInput : InputType; bitn : BitNumberType; IfNotMatches : BitType) return InputType
     with
-        Pre => (bitn <= BitNumberType(EntryPkg.Length(Input.First_Element))) and
-               (matching = '0' or matching = '1')
+        Post => -- Only matching remain
+                (for all I of RemoveAtBit'Result =>
+                    BitType(RShift(I and (2**bitn), bitn)) = IfNotMatches) and 
+                -- Non-matching are not present
+                (for all I of CurInput =>
+                    (if not (BitType(RShift(I and (2**bitn), bitn)) = IfNotMatches) then
+                        not Contains(RemoveAtBit'Result, I)))
     is
         result : InputType;
     begin
-        for I of Input loop
-            if Element(I, 1 + Natural(bitn)) /= matching then
-                result.Append (I);
+        for I of CurInput loop
+            if BitType(RShift(I, bitn) and 1) = IfNotMatches then
+                result.Append(I);
             end if;
         end loop;
-
-        Input := result;
-    end RemoveBits;
+        return result;
+    end RemoveAtBit;
 
     type SolutionB is new Solution with record
         null;
     end record;
 
+    -- Part 2 value extraction process with generic bit criteria
+    generic
+        with function BitCriteria(MostCommon : BitType; IsEqual : Boolean) return BitType is <>;
+    function RunProcess(self: Solution'Class) return EntryType;
+
+    function RunProcess(self: Solution'Class) return EntryType is
+        CurInput : InputType := self.Input;
+    begin
+        for bitn in reverse 0..(self.EntryBits-1) loop
+            exit when CurInput.Length = 1;
+            Assert(CurInput.Length >= 1);
+            
+            declare
+                Num1 : ResultType := self.CountBits(CurInput, bitn);
+                KeepBit : BitType := BitCriteria ((if Num1 > ResultType(CurInput.Length) / 2 then 1 else 0),
+                                                  Num1 = ResultType(CurInput.Length) - Num1);
+            begin
+                CurInput := RemoveAtBit (CurInput, bitn, KeepBit);
+            end;
+        end loop;
+
+        return CurInput.First_Element;
+    end RunProcess;
+
     function Solve (SDisp : p03b;
                     InData : in Ada.Text_IO.File_type) return ResultType is
-        use type InputType;
         s : SolutionB;
-        Input : InputType renames s.Input;
 
-        oxresult : ResultType := 0;
-        co2result : ResultType := 0;
+        function OxCriteria(MostCommon : BitType; IsEqual : Boolean) return BitType is
+        begin
+            if IsEqual then return 1;
+            else return MostCommon;
+            end if;
+        end OxCriteria;
+
+        function O2Criteria(MostCommon : BitType; IsEqual : Boolean) return BitType is
+        begin
+            if IsEqual then return 0;
+            else return not MostCommon;
+            end if;
+        end O2Criteria;
+
+        function OxProcess is new RunProcess(BitCriteria => OxCriteria);
+        function O2Process is new RunProcess(BitCriteria => O2Criteria);
     begin
-        ReadInput(InData, s);
-
-        declare
-            ox : InputType := Input;
-        begin
-            for bitn in 0..(Length(ox.First_Element) - 1) loop
-                exit when Integer(ox.Length) = 1;
-                declare
-                    num0 : ResultType := CountBits (ox, BitNumberType(bitn), '1');
-                    num1 : ResultType := CountBits (ox, BitNumberType(bitn), '0');
-                begin
-                    if num0 = num1 then
-                        RemoveBits(ox, BitNumberType(bitn), '0');
-                    elsif num0 > num1 then
-                        RemoveBits(ox, BitNumberType(bitn), '1');
-                    else
-                        RemoveBits(ox, BitNumberType(bitn), '0');
-                    end if;
-                end;
-            end loop;
-
-            for i in 1..(EntryPkg.Length(ox.First_Element)) loop
-                oxresult := (oxresult * 2) + (if Element(ox.First_Element, i) = '1' then 1 else 0);
-            end loop;
-
-            if PrintDebug then Put_Line ("xx" & ox.First_Element'image & ASCII.LF); end if;
-        end;
-
-        declare
-            co2 : InputType := Input;
-        begin
-            for bitn in 0..(Length(co2.First_Element) - 1) loop
-                exit when Integer(co2.Length) = 1;
-                declare
-                    num0 : ResultType := CountBits (co2, BitNumberType(bitn), '1');
-                    num1 : ResultType := CountBits (co2, BitNumberType(bitn), '0');
-                begin
-                    if num0 = num1 then
-                        RemoveBits(co2, BitNumberType(bitn), '1');
-                    elsif num0 > num1 then
-                        RemoveBits(co2, BitNumberType(bitn), '0');
-                    else
-                        RemoveBits(co2, BitNumberType(bitn), '1');
-                    end if;
-                end;
-            end loop;
-
-            for i in 1..(EntryPkg.Length(co2.First_Element)) loop
-                co2result := (co2result * 2) + (if Element(co2.First_Element, i) = '1' then 1 else 0);
-            end loop;
-
-            if PrintDebug then Put_Line ("xx" & co2.First_Element'image & ASCII.LF); end if;
-        end;
-
-        return oxresult * co2result;
+        s.ReadInput(InData);
+        return ResultType(OxProcess(s) * O2Process(s));
     end Solve;
 
 end p03;

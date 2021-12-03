@@ -35,10 +35,13 @@ package body p00 is
         Input : InputType := InputPkg.Empty_Vector;
     end record;
 
-    procedure ReadInput(InData : File_Type; S : in out Solution'class) is
+    procedure ReadInput(self : in out Solution'class; InData : File_Type)
+    with
+        Post => not self.Input.Is_Empty
+    is
     begin
         while not End_Of_File(InData) loop
-            s.Input.Append (GetInt(InData));
+            self.Input.Append (GetInt(InData));
             AdvanceLine (InData);
         end loop;
     end ReadInput;
@@ -54,9 +57,8 @@ package body p00 is
     function Solve (SDisp : p00a;
                     InData : in Ada.Text_IO.File_type) return ResultType is
         s : SolutionA;
-        Input : InputType renames s.Input;
     begin
-        ReadInput(InData, s);
+        ReadInput(s, InData);
 
         -- do it here
 
@@ -74,9 +76,8 @@ package body p00 is
     function Solve (SDisp : p00b;
                     InData : in Ada.Text_IO.File_type) return ResultType is
         s : SolutionB;
-        Input : InputType renames s.Input;
     begin
-        ReadInput(InData, s);
+        ReadInput(s, InData);
 
         -- do it here
 
