@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/.objs/aoc21_main",
-            "args": ["-REMOVEDp", "p01a"],
+            "args": ["-p", "p04a"],
             "stopAtEntry": true,
             "cwd": "${workspaceRoot}",
             "environment": [],
