@@ -133,6 +133,11 @@ package body p04 is
 
     function MarkAndCheck(B : in out Board; N : BNumType) return Boolean
     with
+        Pre =>
+            -- Boards with bingo shouldn't be checked again.
+            (for all R in RowRange =>
+                (for all C in ColRange =>
+                    not IsBingo(B, R, C))),
         Post =>
             -- Below code assumes there are no duplicate numbers
             -- This assertion would fail if there are duplicate matching numbers though.
@@ -170,6 +175,7 @@ package body p04 is
 
         for I of s.Nums loop
             if PrintDebug then Put_Line ("After " & I'Image); end if;
+            
             for B of S.Boards loop
                 if MarkAndCheck (B, I) then
                     return SumUnmarked (B) * ResultType(I);
@@ -203,7 +209,7 @@ package body p04 is
                     declare
                         B : Board renames s.Boards(BI);
                     begin
-                        if (not DoneBoards(BI)) and MarkAndCheck (B, I) then
+                        if (not DoneBoards(BI)) and then MarkAndCheck (B, I) then
                             LastResult := SumUnmarked (B) * ResultType(I);
                             DoneBoards(BI) := True;
                         end if;
