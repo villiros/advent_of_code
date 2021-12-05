@@ -39,3 +39,12 @@ p04a     p04.txt     33462
 
 p04b	 p04_test0.txt	1924
 p04b	 p04.txt	30070
+
+# 
+# Day 05
+#
+p05a     p05_test0.txt     5
+p05a     p05.txt     6005
+
+p05b	p05_test0.txt	12
+p05b	p05.txt		23864
