@@ -2,9 +2,15 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Maps; use Ada.Strings.Maps;
 with Ada.Characters.Handling;
+with Ada.Assertions;
+
+with Harness;
 
 package body Utils is
+    subtype ResultType is Harness.ResultType;
+
     use InputStrPkg;
+    procedure Assert(Check: Boolean; Message: String) renames Ada.Assertions.Assert;
 
     function PeekChar(File: File_Type; DoSkipWs : Boolean := False) return Character is
         c : Character;
@@ -106,10 +112,10 @@ package body Utils is
         raise ReadFailed;
     end GetEnum;
 
-    function GetInt(File : File_Type; Required : Boolean := True; Default : Integer := 0)
-        return Integer is
-        package Int_IO is new Integer_IO(Integer);
-        function Error return Integer is
+    function GetInt(File : File_Type; Required : Boolean := True; Default : ResultType := 0)
+        return ResultType is
+        package Int_IO is new Integer_IO(ResultType);
+        function Error return ResultType is
         begin
             if Required then
                 raise ReadFailed;
@@ -122,7 +128,7 @@ package body Utils is
         case PeekChar (File) is
             when '+' | '-' | '0'..'9' =>
                 declare
-                    Result : Integer;
+                    Result : ResultType;
                 begin
                     Int_IO.Get(File, Result);
                     return Result;
@@ -143,5 +149,11 @@ package body Utils is
                 return c;
         end case;
     end GetChar;
+
+    procedure SkipChar(File : File_Type; AssertExpected : Character) is
+        c : Character := GetChar (File);
+    begin
+        Assert(c = AssertExpected, "Unexpected character " & c);
+    end SkipChar;
 
 end Utils;

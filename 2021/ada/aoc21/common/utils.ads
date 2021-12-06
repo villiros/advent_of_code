@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Bounded;
 with Ada.Strings.Maps; use Ada.Strings.Maps;
+With Harness;
 
 package Utils is
     -- Type def for reading strings from input files
@@ -44,11 +45,13 @@ package Utils is
     -- Read an enum type from input, after skipping ws.
     -- Raises ReadFailed if type cannot be read.
 
-    function GetInt(File : File_Type; Required : Boolean := True; Default : Integer := 0) return Integer;
+    function GetInt(File : File_Type; Required : Boolean := True; Default : Harness.ResultType := 0) return Harness.ResultType;
     -- Read an integer from input, first skipping ws, then stopping before the first whitespace, newline, or non-string character
     -- If Required is True, throws ReadFailed, otherwise returns Default if there's nothing to read.
 
     function GetChar(File : File_Type) return Character;
     -- Read a single character and return it (after skipping ws).
     -- If eof or no more characters on the current line, raises ReadFailed
+
+    procedure SkipChar(File : File_Type; AssertExpected : Character);
 end Utils;

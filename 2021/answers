@@ -48,3 +48,12 @@ p05a     p05.txt     6005
 
 p05b	p05_test0.txt	12
 p05b	p05.txt		23864
+
+# 
+# Day 06
+#
+p06a     p06_test0.txt     5934
+p06a     p06.txt     388739
+
+p06b	p06_test0.txt	26984457539
+p06b	p06.txt		1741362314973

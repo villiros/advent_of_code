@@ -34,7 +34,7 @@ package body p01 is
         NIncr : ResultType := 0;
     begin
         while not End_Of_File(InData) loop
-            Input.Append (GetInt(InData));
+            Input.Append (Integer(GetInt(InData)));
             AdvanceLine (InData);
         end loop;
 
@@ -58,7 +58,7 @@ package body p01 is
         WinSum1, WinSum2 : Natural := 0;
     begin
         while not End_Of_File(InData) loop
-            Input.Append (GetInt(InData));
+            Input.Append (Integer(GetInt(InData)));
             AdvanceLine (InData);
         end loop;
 

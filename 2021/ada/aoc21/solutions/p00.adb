@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 with Ada.Assertions; use Ada.Assertions;
 
+with Harness; use Harness;
 with utils; use utils;
 
 package body p00 is
@@ -27,7 +28,7 @@ package body p00 is
     ------------------------------------
 
     package InputPkg is new
-        Ada.Containers.Vectors(Index_Type => Positive, Element_Type => Integer);
+        Ada.Containers.Vectors(Index_Type => Positive, Element_Type => ResultType);
     use InputPkg;
     subtype InputType is InputPkg.Vector;
 
