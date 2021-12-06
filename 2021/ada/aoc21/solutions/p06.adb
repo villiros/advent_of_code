@@ -19,6 +19,8 @@ package body p06 is
     -- Common stuff
     ------------------------------------------------------------------------
     type FishTimerType is range 0..8;
+    subtype FishTimerAfterSpawn is FishTimerType range 6..6;
+    subtype FishTimerBorn is FishTimerType range 8..8;
 
     -- PartA: 2**(80/10) is ~1k; input is ~300, so Integer is plenty
     -- PartB: need 64-bit integer for this. Fits into signed one though.
@@ -95,17 +97,17 @@ package body p06 is
             -- Number of fishes cannot decrease
             (SumFish(C'Old) <= SumFish(C)) and
             -- All at 0 spawn new ones at 8 (previous 8 are now 7)
-            (C(FishTimerType'Last) = (C(FishTimerType'First)'Old)) and
+            (C(8) = (C(0)'Old)) and
             -- All at 0 move to 6 plus whatever moved from 7
-            (C(FishTimerType'First)'Old + C(7)'Old = C(FishTimerType(6)))
+            (C(0)'Old + C(7)'Old = C(FishTimerType(6)))
     is
         SpawnCount : FishCount := C(0);
     begin
-        for I in FishTimerType'First..(FishTimerType'Last - 1) loop
-            C(I) := C(I + 1);
-        end loop;
-        C(FishTimerType'Last) := SpawnCount;
-        C(6) := C(6) + SpawnCount;
+        C(FishTimerType'First..FishTimerType'Pred(FishTimerType'Last)) :=
+            C(FishTimerType'Succ(FishTimerType'First)..FishTimerType'Last);
+        
+        C(FishTimerBorn'First) := SpawnCount;
+        C(FishTimerAfterSpawn'First) := C(FishTimerAfterSpawn'First) + SpawnCount;
     end DoDay;
 
     type SolutionA is new Solution with record
