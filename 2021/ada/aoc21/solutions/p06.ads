@@ -1,5 +1,6 @@
 with Ada.Text_IO;
 with Ada.Containers.Vectors;
+with Ada.Real_Time;
 
 with Harness; use Harness;
 
@@ -15,9 +16,11 @@ package p06 is
 
     overriding
     function Solve (SDisp : p06a;
-                    InData : in Ada.Text_IO.File_type) return ResultType;
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType;
     overriding
     function Solve (SDisp : p06b;
-                    InData : in Ada.Text_IO.File_type) return ResultType;
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType;
 
 end p06;

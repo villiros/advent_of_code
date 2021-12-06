@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 with Ada.Assertions; use Ada.Assertions;
+with Ada.Real_Time;
 
 with utils; use utils;
 
@@ -170,7 +171,8 @@ package body p05 is
     end record;
 
     function Solve (SDisp : p05a;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType is
         s : SolutionA;
 
         m : MapType := (others => (others => 0));
@@ -178,6 +180,7 @@ package body p05 is
         Result : ResultType := 0;
     begin
         ReadInput(s, InData);
+        StartTs := Ada.Real_Time.Clock;
 
         for L of s.Input loop
             if IsHoriz (L) or IsVert (L) then
@@ -228,12 +231,14 @@ package body p05 is
     end record;
 
     function Solve (SDisp : p05b;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType is
         s : SolutionB;
         m : MapType := (others => (others => 0));
         Result : ResultType := 0;
     begin
         ReadInput(s, InData);
+        StartTs := Ada.Real_Time.Clock;
 
         for L of s.Input loop
             for D in 0..(L.NumPoints-1) loop

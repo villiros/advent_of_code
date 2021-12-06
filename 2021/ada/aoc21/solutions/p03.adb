@@ -3,6 +3,7 @@ with Ada.Containers.Vectors;
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Strings.Bounded;
 with Ada.Assertions;
+with Ada.Real_Time;
 
 with utils; use utils;
 
@@ -124,12 +125,14 @@ package body p03 is
     end record;
 
     function Solve (SDisp : p03a;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.time) return ResultType is
         s : SolutionA;
         Gamma : GammaRateType renames s.Gamma;
         Eps : EpsRateType renames s.Eps;
     begin
         s.ReadInput(InData);
+        StartTs := Ada.Real_Time.Clock;
 
         for bitn in 0..(s.EntryBits-1) loop
             if s.CountBits (s.Input, bitn) > ResultType(s.Input.Length) / 2 then
@@ -196,7 +199,8 @@ package body p03 is
     end RunProcess;
 
     function Solve (SDisp : p03b;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.time) return ResultType is
         s : SolutionB;
 
         function OxCriteria(MostCommon : BitType; IsEqual : Boolean) return BitType is
@@ -217,6 +221,8 @@ package body p03 is
         function O2Process is new RunProcess(BitCriteria => O2Criteria);
     begin
         s.ReadInput(InData);
+        StartTs := Ada.Real_Time.Clock;
+        
         return ResultType(OxProcess(s) * O2Process(s));
     end Solve;
 

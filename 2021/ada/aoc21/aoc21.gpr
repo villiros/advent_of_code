@@ -1,10 +1,18 @@
 -- https://github-wiki-see.page/m/AdaCore/ada_language_server/wiki/getting-started
 project aoc21 is
+    type Mode_Type is ("debug", "release");
+    Mode : Mode_Type := external ("mode", "debug");
+
     for Main use ("aoc21_main.adb");
     for Object_Dir use ".objs/" & external("OBJSUBDIR", "");
     for Source_Dirs use("./", "common/", "solutions/");
 
     package Compiler is
-        for Default_Switches ("Ada") use ("-g", "-E", "-gnatE", "-gnat2020", "-gnata");
+        case Mode is
+            when "debug" =>
+                for Switches ("Ada") use ("-g", "-E", "-gnatE", "-gnat2020", "-gnata");
+            when "release" =>
+                null;
+        end case;
     end Compiler;
 end aoc21;

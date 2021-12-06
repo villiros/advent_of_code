@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Command_Line;
 with Harness; use Harness;
+with Ada.Real_Time; use Ada.Real_Time;
 
 procedure aoc21_main is
     Ans : Answers;
@@ -21,19 +22,26 @@ begin
         declare
             InData : File_Type;
             Result : ResultType;
+            SolveTimeUs : Integer;
         begin
             Open (InData, In_File, InputNamePkg.To_String(E.Name));
 
-            Result := Solve (E.Dispatcher.all, InData);
+            declare
+                StartTime : Time;
+            begin
+                Result := Solve (E.Dispatcher.all, InData, StartTime);
+                SolveTimeUs := Integer((Clock - StartTime) / Microseconds(1));
+            end;
 
             if E.ResultKnown then
                 if Result = E.Result then
-                    Put_Line ("OK");
+                    Put_Line ("OK in " & SolveTimeUs'Image & "us");
                 else
                     WasOk := False;
                     Put_Line ("FAIL: Got " & Result'Image &
                               " Expected " & E.Result'Image &
-                              " Diff " & ResultType'Image(ResultType(Result - E.Result)));
+                              " Diff " & ResultType'Image(ResultType(Result - E.Result)) &
+                              " In " & SolveTimeUs'Image & "us");
                 end if;
             else
                 Put_Line ("???: Got " & Result'Image);

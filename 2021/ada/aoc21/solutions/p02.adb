@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 with Ada.Assertions; use Ada.Assertions;
+with Ada.Real_Time;
 
 with utils; use utils;
 
@@ -74,12 +75,14 @@ package body p02 is
     end record;
 
     function Solve (SDisp : p02a;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType is
         s : SolutionA;
         Input : InputType renames s.Input;
         Pos : Coordinate renames S.Pos;
     begin
         ReadInput(InData, s);
+        StartTs := Ada.Real_Time.Clock;
 
         for E of Input loop
             case E.Op is
@@ -102,12 +105,14 @@ package body p02 is
     end record;
 
     function Solve (SDisp : p02b;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType is
         s : SolutionB;
         Input : InputType renames s.Input;
         Pos : Coordinate renames S.Pos;
     begin
         ReadInput(InData, s);
+        StartTs := Ada.Real_Time.Clock;
 
         for E of Input loop
             case E.Op is

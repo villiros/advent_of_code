@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 with Ada.Assertions; use Ada.Assertions;
+with Ada.Real_Time;
 
 with utils; use utils;
 
@@ -27,7 +28,8 @@ package body p01 is
     end record;
 
     function Solve (SDisp : p01a;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType is
         s : Solution;
         Input : InputType renames s.Input;
 
@@ -37,6 +39,8 @@ package body p01 is
             Input.Append (Integer(GetInt(InData)));
             AdvanceLine (InData);
         end loop;
+
+        StartTs := Ada.Real_Time.Clock;
 
         for i in (Input.First_Index+1)..Input.Last_Index loop
             if Input(i) > Input(i-1) then
@@ -50,7 +54,8 @@ package body p01 is
     -- Solution B
     --
     function Solve (SDisp : p01b;
-                    InData : in Ada.Text_IO.File_type) return ResultType is
+                    InData : in Ada.Text_IO.File_type;
+                    StartTs : out Ada.Real_Time.Time) return ResultType is
         s : Solution;
         Input : InputType renames s.Input;
 
@@ -61,6 +66,8 @@ package body p01 is
             Input.Append (Integer(GetInt(InData)));
             AdvanceLine (InData);
         end loop;
+
+        StartTs := Ada.Real_Time.Clock;
 
         for i in Input.First_Index..(Input.First_Index + 2) loop
             WinSum1 := WinSum1 + Input(i);

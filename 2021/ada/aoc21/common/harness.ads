@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Bounded;
 with Ada.Containers.Vectors;
+with Ada.Real_Time;
 
 package Harness is
     --
@@ -29,7 +30,8 @@ package Harness is
     type SolutionDispatcherAcc is access SolutionDispatcher'Class;
 
     function Solve(SDisp : SolutionDispatcher;
-                   InData : in Ada.Text_IO.File_Type) return ResultType is abstract;
+                   InData : in Ada.Text_IO.File_Type;
+                   StartTs : out Ada.Real_Time.Time) return ResultType is abstract;
 
     -- Registered dispatchers
     package DispatchersPkg is new Ada.Containers.Vectors(Index_Type => Positive, Element_Type => SolutionDispatcherAcc);
