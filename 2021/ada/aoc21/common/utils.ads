@@ -51,7 +51,7 @@ package Utils is
 
     function GetChar(File : File_Type) return Character;
     -- Read a single character and return it (after skipping ws).
-    -- If eof or no more characters on the current line, raises ReadFailed
+-- If eof or no more characters on the current line, raises ReadFailed
 
     procedure SkipChar(File : File_Type; AssertExpected : Character);
 end Utils;
