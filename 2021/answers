@@ -75,3 +75,12 @@ p08a     p08.txt     543
 
 p08b	p08_test0.txt	61229
 p08b	p08.txt		994266
+
+# 
+# Day 09
+#
+p09a     p09_test0.txt     15
+p09a     p09.txt     502
+
+p09b	p09_test0.txt	1134
+p09b	p09.txt		1330560
