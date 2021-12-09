@@ -12,7 +12,7 @@ project aoc21 is
             when "debug" =>
                 for Switches ("Ada") use ("-g", "-E", "-gnatE", "-gnat2020", "-gnata");
             when "release" =>
-                for Switches ("Ada") use ("-gnat2020");
+                for Switches ("Ada") use ("-gnat2020", "-O3");
         end case;
     end Compiler;
 end aoc21;
