@@ -84,3 +84,12 @@ p09a     p09.txt     502
 
 p09b	p09_test0.txt	1134
 p09b	p09.txt		1330560
+
+# 
+# Day 10
+#
+p10a     p10_test0.txt     26397
+p10a     p10.txt     265527
+
+p10b	p10_test0.txt	288957
+p10b	p10.txt		3969823589
