@@ -24,13 +24,13 @@ package body p10 is
 
     -- Using characters with dynamic constraint for simplicity.
     subtype Char is Character
-        with Dynamic_Predicate => Char in '(' | ')' | '[' | ']' | '{' | '}' | '<' | '>';
+        with Static_Predicate => Char in '(' | ')' | '[' | ']' | '{' | '}' | '<' | '>';
     
     subtype OpenChar is Char
-        with Dynamic_Predicate => OpenChar in '(' | '[' | '{' | '<';
+        with Static_Predicate => OpenChar in '(' | '[' | '{' | '<';
     
     subtype CloseChar is Char
-        with Dynamic_Predicate => CloseChar in ')' | ']' | '}' | '>';
+        with Static_Predicate => CloseChar in ')' | ']' | '}' | '>';
     
     -- Convert opening character to a matching closing one
     function ToClose(c: OpenChar) return CloseChar is
@@ -40,8 +40,6 @@ package body p10 is
             when '[' => return ']';
             when '{' => return '}';
             when '<' => return '>';
-            -- Should not be reached due to type constraint
-            when others => raise CodeError;
         end case;
     end ToClose;
     
@@ -101,8 +99,7 @@ package body p10 is
                     when ')' => 3,
                     when ']' => 57,
                     when '}' => 1197,
-                    when '>' => 25137,
-                    when others => 0);
+                    when '>' => 25137);
     end Score;
 
 
@@ -126,7 +123,7 @@ package body p10 is
                 char_loop:
                 for c of line loop
                     case c is
-                        when '(' | '[' | '{' | '<' =>
+                        when OpenChar =>
                             stack.Append(c);
                         when others =>
                             if (stack = StackPkg.Empty_Vector) or (ToClose(stack.Last_Element) /= c) then
@@ -157,8 +154,7 @@ package body p10 is
                     when ')' => 1,
                     when ']' => 2,
                     when '}' => 3,
-                    when '>' => 4,
-                    when others => 0);
+                    when '>' => 4);
     end ScoreB;
 
     function Solve (SDisp : p10b;
@@ -185,7 +181,7 @@ package body p10 is
                 char_loop:
                 for c of line loop
                     case c is
-                        when '(' | '[' | '{' | '<' =>
+                        when OpenChar =>
                             stack.Append(c);
                         when others =>
                             if (stack = StackPkg.Empty_Vector) or (ToClose(stack.Last_Element) /= c) then
