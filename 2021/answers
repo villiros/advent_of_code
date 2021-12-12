@@ -102,3 +102,16 @@ p11a     p11.txt     1667
 
 p11b	p11_test0.txt		195
 p11b	p11.txt			488
+
+# 
+# Day 12
+#
+p12a     p12_test0.txt     10
+p12a     p12_test1.txt     19
+p12a     p12_test2.txt     226
+p12a     p12.txt     	3738
+
+p12b     p12_test0.txt     36
+p12b     p12_test1.txt     103
+p12b     p12_test2.txt     3509
+p12b     p12.txt        120506
