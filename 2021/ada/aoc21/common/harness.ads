@@ -41,11 +41,12 @@ package Harness is
     -- Command line and helpers;
     --
     PrintDebug : Boolean := False;
+    CmdProblemNames : ProblemNames;
+    SkipTests : Boolean := False;
 
-    function CmdGetSolutionsFilter return ProblemNames;
-
-    -- Checks for standard command-line options
-    procedure CmdSetup;
+    -- Reads command line options
+    -- Returns False if the program should abort
+    function CmdSetup return Boolean;
 
     --
     -- Answers db
@@ -74,6 +75,6 @@ package Harness is
     subtype Answers is AnswersPkg.Vector;
 
     -- Return expected and unknown answers. If problem name list is specified, filtered by that.
-    function GetAnswers(Filter : ProblemNames := ProblemNamesPkg.Empty_Vector) return Answers;
+    function GetAnswers return Answers;
 
 end Harness;

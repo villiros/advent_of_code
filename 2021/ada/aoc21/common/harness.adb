@@ -2,6 +2,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Command_Line;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with GNAT.Command_Line;   use GNAT.Command_Line;
 
 with Utils; use Utils;
 with Solutions;
@@ -9,44 +10,52 @@ with Solutions;
 package body Harness is
     package CMD renames Ada.Command_Line;
 
-    procedure CmdSetup is
+    function CmdSetup return Boolean is
     begin
-        for i in 1..CMD.Argument_Count loop
-            if CMD.Argument(i) = "-d" then
-                Put_Line("  # Printing debug logs");
-                PrintDebug := True;
-            end if;
+        loop
+            case Getopt ("d p: -notest h") is
+                when 'd' =>
+                    Put_Line("  # Printing debug logs");
+                    PrintDebug := True;
+                when 'p' =>
+                    declare
+                        param: String := Parameter;
+                    begin
+                        if param'Length /= 4 then
+                            Put_Line ("ERROR: -p argument " & Param & " is too not pXX[ab]");
+                            return False;
+                        else
+                            CmdProblemNames.Append(param);
+                        end if;
+                    end;
+                when '-' =>
+                    if Full_Switch = "-notest" then
+                        SkipTests := True;
+                    else
+                        Put_Line ("Invalid argument: " & Full_switch);
+                        return False;
+                    end if;
+                when 'h'  =>
+                    Put_Line ("advent [-d] [-p pXXX] [-notest]");
+                    Put_Line ("  -d: Print debug logs.");
+                    Put_Line ("  -p: Run only specified problems. Ex: p01b");
+                    Put_Line ("  --notest: Don't run _test cases");
+                    return False;
+                when ASCII.nul =>
+                    exit;
+                when others =>
+                    Put_Line ("Invalid argument: " & Full_switch);
+                    return False;
+            end case;
         end loop;
+        return True;
     end CmdSetup;
 
-    function CmdGetSolutionsFilter return ProblemNames is
-        BadArgument : exception;
-        Result : ProblemNames;
-
-        procedure addParam(Val : String) is
-        begin
-            if Val'Length /= 4 then
-                Put_Line ("ERROR: -p argument " & Val & " is too not pXX[ab]");
-                raise BadArgument with ("ERROR: -p argument " & Val & " is too not pXX[ab]");
-            end if;
-
-            Result.Append (Val);
-        end addParam;
-
-    begin
-        for i in 1..CMD.Argument_Count loop
-            if CMD.Argument (i) = "-p" and i < CMD.Argument_Count then
-                addParam (Cmd.Argument(i+1));
-            elsif Index(CMD.Argument(i), "-p") = 1 then
-                addParam (Cmd.Argument(i)(3..(Cmd.Argument(i)'Length)));
-            end if;
-        end loop;
-        return Result;
-    end CmdGetSolutionsFilter;
-
-    function GetAnswers(Filter : ProblemNames := ProblemNamesPkg.Empty_Vector) return Answers is
+    function GetAnswers return Answers is
         use InputStrPkg;
         use InputNamePkg;
+
+        Filter : ProblemNames renames CmdProblemNames;
 
         File : File_Type;
         Result : Answers;
@@ -87,6 +96,9 @@ package body Harness is
                     end if;
                     if not Filter.Is_Empty and then Filter.Find_Index (problem_name) = ProblemNamesPkg.No_Index then
                         -- Not empty and problem name not in the filter. Skip;
+                        null;
+                    elsif SkipTests and Index(input_fname, "_test") /= 0 then
+                        -- Skipping test.
                         null;
                     else
                         Result.Append (Answer'(Dispatcher => Solutions.GetSolution (problem_name),
