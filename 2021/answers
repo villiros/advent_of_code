@@ -115,3 +115,23 @@ p12b     p12_test0.txt     36
 p12b     p12_test1.txt     103
 p12b     p12_test2.txt     3509
 p12b     p12.txt        120506
+
+# 
+# Day 13
+#
+p13a     p13_test0.txt     17
+p13a     p13.txt     737
+
+p13b	 p13_test0.txt	16
+# ZUJUAFHP is the answer (flip the output first)
+# Don't do matching, just check number of dots in the output
+p13b	 p13.txt	96
+
+# 
+# Day 14
+#
+p14a     p14_test0.txt     1588
+p14a     p14.txt     2003
+
+p14b	p14_test0.txt	2188189693529
+p14b	p14.txt		2276644000111

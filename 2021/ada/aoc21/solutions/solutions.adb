@@ -11,6 +11,8 @@ with p09;
 with p10;
 with p11;
 with p12;
+with p13;
+with p14;
 -- ADVENT_ADD_WITH
 
 package body solutions is
@@ -32,6 +34,8 @@ package body solutions is
         p10.GetDispatchers(D);
         p11.GetDispatchers(D);
         p12.GetDispatchers(D);
+        p13.GetDispatchers(D);
+        p14.GetDispatchers(D);
         -- ADVENT_ADD_GET_DISPATCHERS
 
         for I of D loop
