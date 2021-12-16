@@ -54,17 +54,16 @@ literal(<<1:1, Last:4, Rest/bitstring>>, Acc) ->
     literal(Rest, Acc * 16 + Last).
 
 packet(<<0:1, BitLen:15, Data:BitLen/bitstring, Rest/bitstring>>) ->
-    Consume = 
-        fun C(T, Acc) when bit_size(T) < 8 ->
-                {Acc, <<>>};
-            C(T, Acc) ->
-                {V, T2} = get_one(T),
-                C(T2, Acc ++ [V])
-        end,
-    {R, <<>>} = Consume(Data, []),
-    {R, Rest};
+    {Res, <<>>} = packet_bitstream(Data, []),
+    {Res, Rest};
 packet(<<1:1, NumPackets:11, Rest/bitstring>>) ->
     packet_1(Rest, NumPackets, []).
+
+packet_bitstream(Bin, Acc) when bit_size(Bin) < 8 ->
+    {Acc, <<>>};
+packet_bitstream(Bin, Acc) ->
+    {Val, Rest} = get_one(Bin),
+    packet_bitstream(Rest, Acc ++ [Val]).
 
 packet_1(BinRest, 0, Acc) ->
     {Acc, BinRest};
