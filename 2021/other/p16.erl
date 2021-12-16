@@ -1,6 +1,5 @@
 -module(p16).
 -export([run/0]).
--compile([export_all]).
 
 run() ->
     io:format("Test 1 expect 16: ~p~n", [add_vsn("8A004A801A8002F478")]),
@@ -61,19 +60,17 @@ packet(<<0:1, BitLen:15, Data:BitLen/bitstring, Rest/bitstring>>) ->
             C(T, Acc) ->
                 {V, T2} = get_one(T),
                 C(T2, Acc ++ [V])
-            end,
+        end,
     {R, <<>>} = Consume(Data, []),
     {R, Rest};
 packet(<<1:1, NumPackets:11, Rest/bitstring>>) ->
-    D = lists:foldl(
-        fun(_, {Bin1, Acc}) ->
-            {V, Bin2} = get_one(Bin1),
-            {Bin2, Acc ++ [V]}
-        end,
-        {Rest, []},
-        lists:seq(1, NumPackets)),
-    {Rest2, Result} = D,
-    {Result, Rest2}.
+    packet_1(Rest, NumPackets, []).
+
+packet_1(BinRest, 0, Acc) ->
+    {Acc, BinRest};
+packet_1(Bin, N, Acc) ->
+    {V, BinRest} = get_one(Bin),
+    packet_1(BinRest, N - 1, Acc ++ [V]).
 
 % Part A: add version numbers
 % Can take the input hex string
