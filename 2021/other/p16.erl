@@ -1,5 +1,5 @@
 -module(p16).
--export([run/0]).
+-export([run/0, test/0]).
 
 run() ->
     io:format("Test 1 expect 16: ~p~n", [add_vsn("8A004A801A8002F478")]),
@@ -93,13 +93,13 @@ eval1({Packet, _ = <<_/bitstring>>}) ->
     eval1(Packet);
 
 eval1({packet, _, 0, D}) ->
-    lists:foldl(fun erlang:'+'/2, 0, [eval1(X) || X <- D]);
+    lists:sum(eval_list(D));
 eval1({packet, _, 1, D}) ->
-    lists:foldl(fun erlang:'*'/2, 1, [eval1(X) || X <- D]);
+    lists:foldl(fun erlang:'*'/2, 1, eval_list(D));
 eval1({packet, _, 2, D}) ->
-    lists:min([eval1(X) || X <- D]);
+    lists:min(eval_list(D));
 eval1({packet, _, 3, D}) ->
-    lists:max([eval1(X) || X <- D]);
+    lists:max(eval_list(D));
 eval1({packet, _, CompOp, [P1, P2]}) when CompOp == 5; CompOp == 6; CompOp == 7 ->
     V1 = eval1(P1),
     V2 = eval1(P2),
@@ -111,6 +111,9 @@ eval1({packet, _, CompOp, [P1, P2]}) when CompOp == 5; CompOp == 6; CompOp == 7 
     end;
 eval1({literal, _, X}) ->
     X.
+
+eval_list(D) ->
+    [eval1(X) || X <- D].
 
 %
 %
