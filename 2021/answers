@@ -144,3 +144,14 @@ p15a     p15.txt     458
 
 p15b	p15_test0.txt	315
 p15b	p15.txt		2800
+
+# 
+# Day 16
+#
+p16a     p16_test0.txt     16
+p16a     p16_test1.txt     12
+p16a     p16_test2.txt     23
+p16a     p16_test3.txt     31
+p16a     p16.txt    	   895 
+
+p16b     p16.txt	1148595959144

@@ -1,5 +1,6 @@
 -module(p16).
 -export([run/0, test/0]).
+-compile([export_all]).
 
 run() ->
     io:format("Test 1 expect 16: ~p~n", [add_vsn("8A004A801A8002F478")]),
