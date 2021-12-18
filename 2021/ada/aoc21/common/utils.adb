@@ -137,10 +137,13 @@ package body Utils is
         end case;
     end GetInt;
 
-    function GetChar(File : File_Type) return Character is
+    function GetChar(File : File_Type; ShouldSkipWs : Boolean := True) return Character is
         c : Character;
     begin
-        SkipWs (File);
+        if ShouldSkipWs then
+            SkipWs (File);
+        end if;
+
         c := PeekChar (File);
         case c is
             when ASCII.LF | ASCII.NUL => raise ReadFailed;
@@ -155,5 +158,18 @@ package body Utils is
     begin
         Assert(c = AssertExpected, "Unexpected character " & c);
     end SkipChar;
+
+    procedure SkipString(File : File_Type; AssertExpected : String) is
+    begin
+        SkipWs (File);
+        for i in AssertExpected'Range loop
+            declare
+                actual: Character := GetChar (File, False);
+            begin
+                Assert(AssertExpected(i) = actual,
+                    "Unexpected string at position " & i'Image & " expected char '" & AssertExpected(i) & "', got '" & actual & "'");                
+            end;
+        end loop;
+    end SkipString;
 
 end Utils;

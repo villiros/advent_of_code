@@ -49,9 +49,14 @@ package Utils is
     -- Read an integer from input, first skipping ws, then stopping before the first whitespace, newline, or non-string character
     -- If Required is True, throws ReadFailed, otherwise returns Default if there's nothing to read.
 
-    function GetChar(File : File_Type) return Character;
-    -- Read a single character and return it (after skipping ws).
--- If eof or no more characters on the current line, raises ReadFailed
+    function GetChar(File : File_Type; ShouldSkipWs : Boolean := True) return Character;
+    -- Read a single character and return it (after optionally skipping ws).
+    -- If eof or no more characters on the current line, raises ReadFailed
 
     procedure SkipChar(File : File_Type; AssertExpected : Character);
+    -- Read a single character (without skipping whitespace) and assert it's equal to AssertExpected.
+
+    procedure SkipString(File : File_Type; AssertExpected : String);
+    -- Skip whitespace and then read AssertExpected string.
+    -- If eof, or read does not match the expectation, raises ReadFailed. 
 end Utils;
