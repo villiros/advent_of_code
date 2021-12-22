@@ -13,8 +13,8 @@ package body p19 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p19a'(Name => "p19a"));
-        D.Append(new p19b'(Name => "p19b"));
+        D.Append(p19a'(Name => "p19a"));
+        D.Append(p19b'(Name => "p19b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

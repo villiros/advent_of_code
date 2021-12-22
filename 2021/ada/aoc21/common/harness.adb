@@ -86,7 +86,7 @@ package body Harness is
                 -- Read in fields
                 declare
                     problem_name : ProblemName := To_String(GetAtom (File));
-                    input_fname : InputName := To_Bounded_String(To_String("../../input/" & GetAtom (File)));
+                    input_fname : InputName := To_Bounded_String("../../input/" & To_String(GetAtom (File)));
                     result_known : Boolean := PeekChar (File, DoSkipWs => True) /= '?';
                     expected_result : ResultType := (if result_known then ResultType(GetInt(File)) else 0);
                 begin
@@ -101,7 +101,7 @@ package body Harness is
                         -- Skipping test.
                         null;
                     else
-                        Result.Append (Answer'(Dispatcher => Solutions.GetSolution (problem_name),
+                        Result.Append (Answer'(Dispatcher => SolutionDispatcherHolderPkg.To_Holder(Solutions.GetSolution (problem_name)),
                                                Name => input_fname,
                                                ResultKnown => result_known,
                                                Result => expected_result));
@@ -109,6 +109,8 @@ package body Harness is
                 end;
             end if;
         end loop Main;
+
+        Close (File);
 
         return Result;
     end GetAnswers;

@@ -12,8 +12,8 @@ package body p11 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p11a'(Name => "p11a"));
-        D.Append(new p11b'(Name => "p11b"));
+        D.Append(p11a'(Name => "p11a"));
+        D.Append(p11b'(Name => "p11b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

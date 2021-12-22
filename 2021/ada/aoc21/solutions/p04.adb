@@ -11,8 +11,8 @@ package body p04 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p04a'(Name => "p04a"));
-        D.Append(new p04b'(Name => "p04b"));
+        D.Append(p04a'(Name => "p04a"));
+        D.Append(p04b'(Name => "p04b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

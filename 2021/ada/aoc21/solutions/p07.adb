@@ -12,8 +12,8 @@ package body p07 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p07a'(Name => "p07a"));
-        D.Append(new p07b'(Name => "p07b"));
+        D.Append(p07a'(Name => "p07a"));
+        D.Append(p07b'(Name => "p07b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

@@ -12,8 +12,8 @@ package body p08 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p08a'(Name => "p08a"));
-        D.Append(new p08b'(Name => "p08b"));
+        D.Append(p08a'(Name => "p08a"));
+        D.Append(p08b'(Name => "p08b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

@@ -11,8 +11,8 @@ package body p06 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p06a'(Name => "p06a"));
-        D.Append(new p06b'(Name => "p06b"));
+        D.Append(p06a'(Name => "p06a"));
+        D.Append(p06b'(Name => "p06b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

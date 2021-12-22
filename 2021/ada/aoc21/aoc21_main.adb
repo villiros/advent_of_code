@@ -21,7 +21,7 @@ begin
     Ans := GetAnswers;
     Put_Line ("# Running " & Integer'Image(Integer(Ans.Length)) & " cases");
     for E of Ans loop
-        Put("# " & E.Dispatcher.Name & " on " & InputNamePkg.To_String (E.Name) & " ");
+        Put("# " & E.Dispatcher.Element.Name & " on " & InputNamePkg.To_String (E.Name) & " ");
         if E.ResultKnown then
             Put_Line ("expect result " & E.Result'Image);
         else
@@ -40,7 +40,7 @@ begin
                 ProblemStartTime: Time := Clock;
                 SolutionStartTime : Time;
             begin
-                Result := Solve (E.Dispatcher.all, InData, SolutionStartTime);
+                Result := Solve (E.Dispatcher.Element, InData, SolutionStartTime);
                 SolveTimeUs := Integer((Clock - SolutionStartTime) / Microseconds(1));
                 TotalSolveTimeUs := TotalSolveTimeUs + SolveTimeUs;
                 ReadInputTimeUs := Integer((SolutionStartTime - ProblemStartTime) / Microseconds (1));
@@ -49,7 +49,7 @@ begin
 
             if E.ResultKnown then
                 if Result = E.Result then
-                    Put (" OK: " & E.Dispatcher.Name & " solve in ");
+                    Put (" OK: " & E.Dispatcher.Element.Name & " solve in ");
                     Put (Float(SolveTimeUs) / 1000.0, 4, 3, 0);
                     Put ("ms; read input in ");
                     Put (Float(ReadInputTimeUs) / 1000.0, 4, 3, 0);

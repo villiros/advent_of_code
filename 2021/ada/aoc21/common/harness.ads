@@ -1,6 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Bounded;
 with Ada.Containers.Vectors;
+with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Indefinite_Holders;
 with Ada.Real_Time;
 
 package Harness is
@@ -27,14 +29,18 @@ package Harness is
     type SolutionDispatcher is abstract tagged record
         Name : ProblemName;
     end record;
-    type SolutionDispatcherAcc is access SolutionDispatcher'Class;
 
     function Solve(SDisp : SolutionDispatcher;
                    InData : in Ada.Text_IO.File_Type;
                    StartTs : out Ada.Real_Time.Time) return ResultType is abstract;
 
+    package SolutionDispatcherHolderPkg is new
+        Ada.Containers.Indefinite_Holders(Element_Type => SolutionDispatcher'Class);
+    subtype SolutionDispatcherHolder is SolutionDispatcherHolderPkg.Holder;
+
     -- Registered dispatchers
-    package DispatchersPkg is new Ada.Containers.Vectors(Index_Type => Positive, Element_Type => SolutionDispatcherAcc);
+    package DispatchersPkg is new
+        Ada.Containers.Indefinite_Vectors(Index_Type => Positive, Element_Type => SolutionDispatcher'Class);
     subtype Dispatchers is DispatchersPkg.Vector;
 
     --
@@ -55,7 +61,7 @@ package Harness is
     subtype InputName is InputNamePkg.Bounded_String;
 
     type Answer is record
-        Dispatcher : SolutionDispatcherAcc;
+        Dispatcher : SolutionDispatcherHolder;
 
         -- Name of the file containing the input
         Name : InputName;
@@ -66,7 +72,7 @@ package Harness is
     end record
     with
         Dynamic_Predicate =>
-            (Answer.Dispatcher /= null) and
+            (not Answer.Dispatcher.Is_Empty) and
             (InputNamePkg.Length(Answer.Name) > 0) and
             (if not Answer.ResultKnown then Answer.Result = 0 else True);
 

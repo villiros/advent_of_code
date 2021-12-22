@@ -12,8 +12,8 @@ package body p00 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p00a'(Name => "p00a"));
-        D.Append(new p00b'(Name => "p00b"));
+        D.Append(p00a'(Name => "p00a"));
+        D.Append(p00b'(Name => "p00b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

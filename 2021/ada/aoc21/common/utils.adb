@@ -81,7 +81,7 @@ package body Utils is
     end AdvanceLine;
 
     function GetAtom(File : File_Type; Delims : Character_Set := Null_Set) return InputStr is
-        Result : InputStr := InputStrPkg.Null_Bounded_String;
+        Result : InputStr;
         c : Character;
     begin
         SkipWs(File);
@@ -90,7 +90,7 @@ package body Utils is
             c := PeekChar (File);
             exit when c = ASCII.NUL or c = ASCII.LF or c = ' ' or c = ASCII.HT;
             exit when Is_In (c, Delims);
-            Result := Append (Result, "" & GetChar (File));
+            Append (Result, GetChar (File));
         end loop;
 
         if Length(Result) < 1 then

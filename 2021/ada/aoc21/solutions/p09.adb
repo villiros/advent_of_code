@@ -12,8 +12,8 @@ package body p09 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p09a'(Name => "p09a"));
-        D.Append(new p09b'(Name => "p09b"));
+        D.Append(p09a'(Name => "p09a"));
+        D.Append(p09b'(Name => "p09b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

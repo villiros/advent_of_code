@@ -5,5 +5,5 @@ source $SCRIPT_DIR/secrets
 
 rsync -av \
     -e"ssh -p $SSHPORT" \
-    --exclude=".objs" \
+    --exclude=".objs" --exclude="gmem.out" \
     $SCRIPT_DIR/../../../../ $SSHHOST:/home/villiros/projects/advent/

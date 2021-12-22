@@ -23,7 +23,7 @@ with p21;
 -- ADVENT_ADD_WITH
 
 package body solutions is
-    function GetSolution(Name : ProblemName) return SolutionDispatcherAcc is
+    function GetSolution(Name : ProblemName) return SolutionDispatcher'Class is
         InvalidSolutionName : exception;
         
         D : Dispatchers;

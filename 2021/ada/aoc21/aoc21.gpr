@@ -15,4 +15,13 @@ project aoc21 is
                 for Switches ("Ada") use ("-gnat2020", "-O3");
         end case;
     end Compiler;
+
+    package Linker is
+        case Mode is
+            when "debug" =>
+                for Switches ("Ada") use ("-lgmem");
+            when "release" =>
+                null;
+        end case;
+    end Linker;
 end aoc21;

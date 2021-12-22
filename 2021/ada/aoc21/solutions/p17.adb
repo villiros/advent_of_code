@@ -13,8 +13,8 @@ package body p17 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p17a'(Name => "p17a"));
-        D.Append(new p17b'(Name => "p17b"));
+        D.Append(p17a'(Name => "p17a"));
+        D.Append(p17b'(Name => "p17b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

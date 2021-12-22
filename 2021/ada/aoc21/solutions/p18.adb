@@ -12,8 +12,8 @@ package body p18 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p18a'(Name => "p18a"));
-        D.Append(new p18b'(Name => "p18b"));
+        D.Append(p18a'(Name => "p18a"));
+        D.Append(p18b'(Name => "p18b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

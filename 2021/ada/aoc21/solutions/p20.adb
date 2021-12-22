@@ -13,8 +13,8 @@ package body p20 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p20a'(Name => "p20a"));
-        D.Append(new p20b'(Name => "p20b"));
+        D.Append(p20a'(Name => "p20a"));
+        D.Append(p20b'(Name => "p20b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

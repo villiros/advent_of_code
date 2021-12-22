@@ -13,8 +13,8 @@ package body p03 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p03a'(Name => "p03a"));
-        D.Append(new p03b'(Name => "p03b"));
+        D.Append(p03a'(Name => "p03a"));
+        D.Append(p03b'(Name => "p03b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------

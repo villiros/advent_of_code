@@ -11,8 +11,8 @@ package body p05 is
     ------------------------------------------------------------------------
     procedure GetDispatchers(D : in out Dispatchers) is
     begin
-        D.Append(new p05a'(Name => "p05a"));
-        D.Append(new p05b'(Name => "p05b"));
+        D.Append(p05a'(Name => "p05a"));
+        D.Append(p05b'(Name => "p05b"));
     end GetDispatchers;
     
     ------------------------------------------------------------------------
