@@ -164,3 +164,40 @@ p17a     p17.txt     11781
 
 p17b	p17_test0.txt	112
 p17b	p17.txt		4531
+
+# 
+# Day 18
+#
+p18a     p18_test0.txt     4140
+p18a     p18.txt     3486
+p18a     p18_test1.txt     1384
+
+p18b	p18_test0.txt	3993
+p18b	p18.txt		4747
+
+# 
+# Day 19
+#
+p19a     p19_test0.txt     79
+p19a     p19.txt     459
+
+p19b	p19_test0.txt	3621
+p19b	p19.txt		19130
+
+# 
+# Day 20
+#
+p20a     p20_test0.txt     35
+p20a     p20.txt     5065
+
+p20b	p20_test0.txt	3351
+p20b	p20.txt		14790
+
+# 
+# Day 21
+#
+p21a     p21_test0.txt     739785
+p21a     p21.txt     752745
+
+p21b	p21_test0.txt	444356092776315
+p21b	p21.txt		309196008717909
