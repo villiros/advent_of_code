@@ -24,17 +24,11 @@ let winning_move = function
   | Scissors -> Paper
   | Paper -> Rock
 
-(* Losing moves *)
-let losing_move = function
-  | Scissors -> Rock
-  | Paper -> Scissors
-  | Rock -> Paper
-
 let match_result (opp, my) =
   match my with
   | _ when winning_move opp = my -> MyLoss
-  | _ when losing_move opp = my -> MyWin
-  | _ -> assert (opp = my); Draw;;
+  | _ when opp = my -> Draw;
+  | _ -> assert ((winning_move my) = opp); MyWin;;
 
 (* Move scores *)
 let move_score = function Rock -> 1 | Paper -> 2 | Scissors -> 3
