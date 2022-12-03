@@ -15,7 +15,9 @@ let rec choose y f =
   | _ :: t -> choose t f
 
 type move = Rock | Paper | Scissors
+
 let moves = [ Rock; Paper; Scissors ]
+
 type match_result = MyWin | MyLoss | Draw
 
 (* Winning moves *)
@@ -27,8 +29,10 @@ let winning_move = function
 let match_result (opp, my) =
   match my with
   | _ when winning_move opp = my -> MyLoss
-  | _ when opp = my -> Draw;
-  | _ -> assert ((winning_move my) = opp); MyWin;;
+  | _ when opp = my -> Draw
+  | _ ->
+      assert (winning_move my = opp);
+      MyWin
 
 (* Move scores *)
 let move_score = function Rock -> 1 | Paper -> 2 | Scissors -> 3
@@ -74,7 +78,9 @@ let partb data =
     | _ -> assert false
   in
   let conv_pair (a, b) = (conv_move a, conv_result b) in
-  let result_to_move result opp = choose moves (fun my -> match_result (opp, my) = result) in
+  let result_to_move result opp =
+    choose moves (fun my -> match_result (opp, my) = result)
+  in
   let decide_move (a, b) = (a, result_to_move b a) in
   let result_score = function MyWin -> 6 | Draw -> 3 | MyLoss -> 0 in
   let match_score ((_, my) as m) =

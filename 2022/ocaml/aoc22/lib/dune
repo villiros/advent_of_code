@@ -1,2 +1,3 @@
 (library
- (name aoc22))
+ (name aoc22)
+ (libraries Dum))
