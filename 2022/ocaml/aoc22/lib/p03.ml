@@ -11,12 +11,6 @@ let apply2 f (a, b) = f a b
 let map2 f (a, b) = (f a, f b)
 let map3 f (a, b, c) = (f a, f b, f c)
 
-(* Map on a 3-tuple *)
-let rec map_3 f = function
-  | a :: b :: c :: rest -> f a b c :: map_3 f rest
-  | [] -> []
-  | _ -> assert false
-
 let priority = function
   | 'a' .. 'z' as c -> Char.code c - Char.code 'a' + 1
   | 'A' .. 'Z' as c -> Char.code c - Char.code 'A' + 27
@@ -39,16 +33,23 @@ let read_data ic =
 
 let parta data =
   let module SS = Set.Make (Int) in
+  (* Convert each tuple part into a set and then intersect them *)
   let find_disj a = SS.choose (apply2 SS.inter (map2 SS.of_list a)) in
   List.fold_left ( + ) 0 (List.map find_disj data)
 
-let partb data =
+let partb (data : (int list * int list) list) =
   let module SS = Set.Make (Int) in
   let solve_group a b c =
+    (* For each tuple, concatenate two parts and make a set *)
     let a, b, c = map3 (SS.of_list << apply2 ( @ )) (a, b, c) in
     SS.choose (SS.inter a (SS.inter b c))
   in
-  List.fold_left ( + ) 0 (map_3 solve_group data)
+  let rec solve = function
+    | a :: b :: c :: rest -> solve_group a b c + solve rest
+    | [] -> 0
+    | _ -> assert false
+  in
+  solve data
 
 (*
  * Runner
