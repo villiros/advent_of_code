@@ -24,3 +24,12 @@ p03a    p03.txt         8176
 
 p03b    p03_test.txt    70
 p03b    p03.txt         2689
+
+#
+# Day 4
+#
+p04a    p04_test.txt    2
+p04a    p04.txt         602
+
+p04b    p04_test.txt    4
+p04b    p04.txt         891

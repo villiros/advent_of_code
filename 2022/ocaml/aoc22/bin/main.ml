@@ -1,4 +1,4 @@
-let () = Dum.default_lim := 1000
+(* let () = Dum.default_lim := 1000 *)
 let param_problems = ref []
 let prob_param name = param_problems := !param_problems @ [ name ]
 
@@ -90,6 +90,8 @@ let run_case (ans : answer) =
        | "p02b" -> P02.solve PartB ic
        | "p03a" -> P03.solve PartA ic
        | "p03b" -> P03.solve PartB ic
+       | "p04a" -> P04.solve PartA ic
+       | "p04b" -> P04.solve PartB ic
        | _ -> assert false
      with exc ->
        close_in_noerr ic;
