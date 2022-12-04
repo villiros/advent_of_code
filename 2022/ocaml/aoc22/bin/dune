@@ -1,0 +1,4 @@
+(executable
+ (public_name aoc22)
+ (name main)
+ (libraries aoc22 Dum Str))

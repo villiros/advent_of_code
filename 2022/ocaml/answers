@@ -1,0 +1,26 @@
+#
+# Day 1
+#
+p01a    p01_test.txt    24000
+p01a    p01.txt         69177
+
+p01b	p01_test.txt	45000
+p01b	p01.txt		    207456
+
+#
+# Day 2
+#
+p02a	p02_test.txt	15
+p02a	p02.txt		    13221
+
+p02b	p02_test.txt	12
+p02b	p02.txt		    13131
+
+#
+# Day 3
+#
+p03a    p03_test.txt    157
+p03a    p03.txt         8176
+
+p03b    p03_test.txt    70
+p03b    p03.txt         2689
