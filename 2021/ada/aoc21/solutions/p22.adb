@@ -49,6 +49,7 @@ package body p22 is
 
     nullCuboid: constant Cuboid := (isNull => True);
 
+    -- Array of non-null cuboids.
     type Cuboids is array(Positive range <>) of Cuboid(false);
 
     function Volume(c: Cuboid) return ResultType is
@@ -340,7 +341,7 @@ package body p22 is
                             end loop;
                         end;
                     end loop;
-                    
+
                     -- Above should make sure that everything in cur does not intersect with e2
                     Assert(for all x of cur2 => GetIsNull(x and e2));
                     cur2.Append(e2);

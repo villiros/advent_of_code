@@ -80,17 +80,23 @@ package body Utils is
         null;
     end AdvanceLine;
 
-    function GetAtom(File : File_Type; Delims : Character_Set := Null_Set) return InputStr is
+    function GetAtom(File : File_Type; Delims : Character_Set := Null_Set; ShouldSkipWs: Boolean := True) return InputStr is
+        use InputStrPkg;
         Result : InputStr;
         c : Character;
+        seenNonWs: Boolean := False;
     begin
-        SkipWs(File);
+        if ShouldSkipWs then
+            SkipWs(File);
+        end if;
 
         loop
             c := PeekChar (File);
-            exit when c = ASCII.NUL or c = ASCII.LF or c = ' ' or c = ASCII.HT;
+            exit when c = ASCII.NUL or c = ASCII.LF or ((ShouldSkipWs or seenNonWs) and (c = ' ' or c = ASCII.HT));
             exit when Is_In (c, Delims);
-            Append (Result, GetChar (File));
+            Append (Result, GetChar (File, ShouldSkipWs));
+            Assert (Element(result, Length(result)) = c, "Read confusion");
+            seenNonWs := seenNonWs or (c /= ' ' and c /= ASCII.HT);
         end loop;
 
         if Length(Result) < 1 then

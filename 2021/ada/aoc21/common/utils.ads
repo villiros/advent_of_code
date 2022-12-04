@@ -34,9 +34,9 @@ package Utils is
     -- Advance to the next line, skipping any ws characters.
     -- Raises ReadFailed if next character is not a ws/nl. Note: advancing at eof simply returns False.
 
-    function GetAtom(File : File_Type; Delims : Character_Set := Null_Set) return InputStr
+    function GetAtom(File : File_Type; Delims : Character_Set := Null_Set; ShouldSkipWs: Boolean := True) return InputStr
         with Post => InputStrPkg.Length(GetAtom'Result) > 0;
-    -- Read a string from input, first skipping ws, then stopping before the first whitespace, newline, or character in delims
+    -- Read a string from input, first skipping ws (can be turned off), then stopping before the first whitespace, newline, or character in delims
     -- Raises ReadFailed if a string cannot be read
 
     generic
