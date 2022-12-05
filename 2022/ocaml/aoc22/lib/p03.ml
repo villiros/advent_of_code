@@ -57,5 +57,5 @@ let partb (data : (int list * int list) list) =
 
 let solve part ic =
   match part with
-  | PartA -> parta (read_data ic)
-  | PartB -> partb (read_data ic)
+  | PartA -> Int (parta (read_data ic))
+  | PartB -> Int (partb (read_data ic))

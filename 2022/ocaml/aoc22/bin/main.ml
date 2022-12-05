@@ -1,4 +1,4 @@
-(* let () = Dum.default_lim := 1000 *)
+let () = Dum.default_lim := 1000
 let param_problems = ref []
 let prob_param name = param_problems := !param_problems @ [ name ]
 
@@ -8,17 +8,24 @@ let () =
     (fun _ -> raise (Arg.Bad "not allowed"))
     "h"
 
+open Aoc22.Common
+
 (*
  * Loading answers and filtering by cmdline
  *)
 type answer = {
   probname : string;
   fname : string;
-  result : int;
+  result : Aoc22.Common.prob_result;
   result_known : bool;
 }
 
-let read_answers =
+let result_to_string = function
+  | Aoc22.Common.Int r -> string_of_int r
+  | Aoc22.Common.Str s -> s
+
+let read_answers : answer list =
+  let open Aoc22.Common in
   let exception BadInputLine of string in
   let ic = open_in "../answers" in
   let rec reader state =
@@ -29,12 +36,17 @@ let read_answers =
         if Str.first_chars ln 1 = "#" then reader state
         else
           match Str.split (Str.regexp "[ \t]+") ln with
-          | pname :: fname :: res :: _ ->
+          | probname :: fname :: (res : string) :: _ when String.length res > 0
+            ->
               let answ, result_known =
-                if res = "?" then (0, false) else (int_of_string res, true)
+                match res.[0] with
+                | '?' -> (Int 0, false)
+                | '0' .. '9' -> (Int (int_of_string res), true)
+                | 'a' .. 'z' | 'A' .. 'Z' -> (Str res, true)
+                | _ -> raise (BadInputLine ("Bad input line: " ^ ln))
               in
               reader state
-              @ [ { probname = pname; fname; result = answ; result_known } ]
+              @ [ { probname; fname; result = answ; result_known } ]
           | _ -> raise (BadInputLine ("Bad input line: " ^ ln)))
   in
   List.rev (reader [])
@@ -47,7 +59,7 @@ let cases_to_run =
       (fun acc param_probname ->
         match
           List.filter
-            (fun { probname = pb; _ } -> pb = param_probname)
+            (fun { probname; _ } -> probname = param_probname)
             all_answers
         with
         | [] -> assert false
@@ -59,7 +71,8 @@ let cases_to_run =
  *)
 let print_run_header (ans : answer) =
   Format.printf "# Running %s on %s" ans.probname ans.fname;
-  if ans.result_known then Format.printf " expect result %i\n" ans.result
+  if ans.result_known then
+    Format.printf " expect result %s\n" (result_to_string ans.result)
   else Format.printf "\n";
   ()
 
@@ -67,13 +80,19 @@ let print_run_header (ans : answer) =
 let check_result (ans : answer) result =
   match ans with
   | { result_known = false; _ } ->
-      Format.printf " ???: Got %i\n" result;
+      Format.printf " ???: Got %s\n" (result_to_string result);
       true
-  | { result_known = true; result = expected; _ } when expected != result ->
-      Format.printf " FAIL: Got %i Expected %i Diff %i\n" result expected
-        (result - expected);
+  | { result_known = true; result = expected; _ } when expected <> result ->
+      Format.printf " FAIL: Got %s Expected %s Diff %s\n"
+        (result_to_string result)
+        (result_to_string expected)
+        (match (expected, result) with
+        | Int e, Int r -> string_of_int (e - r)
+        | Str _, Str _ -> "???"
+        | _ -> assert false);
       false
   | { result_known = true; _ } ->
+      assert (ans.result = result);
       Format.printf " OK\n";
       true
 
@@ -92,6 +111,8 @@ let run_case (ans : answer) =
        | "p03b" -> P03.solve PartB ic
        | "p04a" -> P04.solve PartA ic
        | "p04b" -> P04.solve PartB ic
+       | "p05a" -> P05.solve PartA ic
+       | "p05b" -> P05.solve PartB ic
        | _ -> assert false
      with exc ->
        close_in_noerr ic;

@@ -33,3 +33,13 @@ p04a    p04.txt         602
 
 p04b    p04_test.txt    4
 p04b    p04.txt         891
+
+#
+# Day 5
+#
+p05a    p05_test.txt    CMZ
+p05a    p05.txt         QPJPLMNNR
+
+p05b    p05_test.txt    MCD
+p05b    p05.txt         BQDNWJPVJ
+
