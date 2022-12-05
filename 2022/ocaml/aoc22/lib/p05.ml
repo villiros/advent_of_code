@@ -47,10 +47,11 @@ end
 
 let read_ship ic =
   let ship = new Ship.t in
-  let rec read_manifest s =
+  let rec read_manifest () =
     match input_line ic with
     | exception End_of_file -> assert false
-    | "" -> ()
+    | ln when (String.starts_with ~prefix:" 1" ln) ->
+      assert ((input_line ic) = "")
     | ln ->
         let rec rline s row =
           let ln_i = (row - 1) * 4 in
@@ -61,10 +62,10 @@ let read_ship ic =
               ship#put_bottom row x.[1];
               rline s (row + 1)
         in
-        rline s 1;
-        read_manifest s
+        rline ship 1;
+        read_manifest ()
   in
-  read_manifest ship;
+  read_manifest ();
   ship
 
 let read_commands ic =
