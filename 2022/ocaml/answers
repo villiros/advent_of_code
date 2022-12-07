@@ -43,3 +43,19 @@ p05a    p05.txt         QPJPLMNNR
 p05b    p05_test.txt    MCD
 p05b    p05.txt         BQDNWJPVJ
 
+#
+# Day 6
+#
+p06a    p06_test1.txt   7
+p06a    p06_test2.txt   5
+p06a    p06_test3.txt   6
+p06a    p06_test4.txt   10
+p06a    p06_test5.txt   11
+p06a    p06.txt         1766
+
+p06b    p06_test1.txt   19
+p06b    p06_test2.txt   23
+p06b    p06_test3.txt   23
+p06b    p06_test4.txt   29
+p06b    p06_test5.txt   26
+p06b    p06.txt         2383

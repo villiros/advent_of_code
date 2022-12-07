@@ -50,8 +50,7 @@ let read_ship ic =
   let rec read_manifest () =
     match input_line ic with
     | exception End_of_file -> assert false
-    | ln when (String.starts_with ~prefix:" 1" ln) ->
-      assert ((input_line ic) = "")
+    | ln when String.starts_with ~prefix:" 1" ln -> assert (input_line ic = "")
     | ln ->
         let rec rline s row =
           let ln_i = (row - 1) * 4 in
