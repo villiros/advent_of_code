@@ -59,3 +59,12 @@ p06b    p06_test3.txt   23
 p06b    p06_test4.txt   29
 p06b    p06_test5.txt   26
 p06b    p06.txt         2383
+
+#
+# Day 7
+#
+p07a    p07_test.txt    95437
+p07a    p07.txt         1582412
+
+p07b    p07_test.txt    24933642
+p07b    p07.txt         3696336
