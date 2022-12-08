@@ -68,3 +68,12 @@ p07a    p07.txt         1582412
 
 p07b    p07_test.txt    24933642
 p07b    p07.txt         3696336
+
+#
+# Day 8
+#
+p08a    p08_test.txt    21
+p08a    p08.txt         1798
+
+p08b    p08_test.txt    8
+p08b    p08.txt         259308
