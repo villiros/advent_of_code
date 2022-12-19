@@ -119,6 +119,8 @@ let run_case (ans : answer) =
        | "p07b" -> P07.solve PartB ic
        | "p08a" -> P08.solve PartA ic
        | "p08b" -> P08.solve PartB ic
+       | "p09a" -> P09.solve PartA ic
+       | "p09b" -> P09.solve PartB ic
        | _ -> assert false
      with exc ->
        close_in_noerr ic;
