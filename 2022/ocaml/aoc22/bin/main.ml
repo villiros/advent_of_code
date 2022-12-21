@@ -4,7 +4,10 @@ let prob_param name = param_problems := !param_problems @ [ name ]
 
 let () =
   Arg.parse
-    [ ("-p", Arg.String prob_param, "Day parts to run.") ]
+    [
+      ("-p", Arg.String prob_param, "Day parts to run.");
+      ("-v", Arg.Set Aoc22.Common.verbose, "Output verbose logs");
+    ]
     (fun _ -> raise (Arg.Bad "not allowed"))
     "h"
 
@@ -41,8 +44,8 @@ let read_answers : answer list =
               let answ, result_known =
                 match res.[0] with
                 | '?' -> (Int 0, false)
+                | '"' -> (Str (String.sub res 1 (String.length res - 2)), true)
                 | '0' .. '9' -> (Int (int_of_string res), true)
-                | 'a' .. 'z' | 'A' .. 'Z' -> (Str res, true)
                 | _ -> raise (BadInputLine ("Bad input line: " ^ ln))
               in
               reader state
@@ -121,6 +124,8 @@ let run_case (ans : answer) =
        | "p08b" -> P08.solve PartB ic
        | "p09a" -> P09.solve PartA ic
        | "p09b" -> P09.solve PartB ic
+       | "p10a" -> P10.solve PartA ic
+       | "p10b" -> P10.solve PartB ic
        | _ -> assert false
      with exc ->
        close_in_noerr ic;
