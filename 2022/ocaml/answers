@@ -127,3 +127,12 @@ p12a    p12.txt         361
 
 p12b    p12_test.txt    29
 p12b    p12.txt         354
+
+#
+# Day 13
+#
+p13a    p13_test.txt    13
+p13a    p13.txt         5208
+
+p13b    p13_test.txt    140
+p13b    p13.txt         25792
