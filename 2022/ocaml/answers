@@ -118,3 +118,12 @@ p11a    p11.txt         69918
 
 p11b    p11_test.txt    2713310158
 p11b    p11.txt         19573408701
+
+#
+# Day 12
+#
+p12a    p12_test.txt    31
+p12a    p12.txt         361
+
+p12b    p12_test.txt    29
+p12b    p12.txt         354
