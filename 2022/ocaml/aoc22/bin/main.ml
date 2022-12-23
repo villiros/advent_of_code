@@ -80,64 +80,77 @@ let print_run_header (ans : answer) =
   ()
 
 (* Returns true if success *)
-let check_result (ans : answer) result =
+let check_result (ans : answer) result time =
   match ans with
   | { result_known = false; _ } ->
-      Format.printf " ???: Got %s\n" (result_to_string result);
+      Format.printf " ???: Got %s Time: %.3fms\n" (result_to_string result)
+        (time *. 1000.);
       true
   | { result_known = true; result = expected; _ } when expected <> result ->
-      Format.printf " FAIL: Got %s Expected %s Diff %s\n"
+      Format.printf " FAIL: Got %s Expected %s Diff %s Time: %.3fms\n"
         (result_to_string result)
         (result_to_string expected)
         (match (expected, result) with
         | Int e, Int r -> string_of_int (e - r)
         | Str _, Str _ -> "???"
-        | _ -> assert false);
+        | _ -> assert false)
+        (time *. 1000.);
       false
   | { result_known = true; _ } ->
       assert (ans.result = result);
-      Format.printf " OK\n";
+      Format.printf " OK Time: %.3fms\n" (time *. 1000.);
       true
 
-let run_case (ans : answer) =
+let exec_solve ic probname =
   let open Aoc22 in
+  let start_time = Sys.time () in
+  let result =
+    try
+      match probname with
+      | "p01a" -> P01.solve PartA ic
+      | "p01b" -> P01.solve PartB ic
+      | "p02a" -> P02.solve PartA ic
+      | "p02b" -> P02.solve PartB ic
+      | "p03a" -> P03.solve PartA ic
+      | "p03b" -> P03.solve PartB ic
+      | "p04a" -> P04.solve PartA ic
+      | "p04b" -> P04.solve PartB ic
+      | "p05a" -> P05.solve PartA ic
+      | "p05b" -> P05.solve PartB ic
+      | "p06a" -> P06.solve PartA ic
+      | "p06b" -> P06.solve PartB ic
+      | "p07a" -> P07.solve PartA ic
+      | "p07b" -> P07.solve PartB ic
+      | "p08a" -> P08.solve PartA ic
+      | "p08b" -> P08.solve PartB ic
+      | "p09a" -> P09.solve PartA ic
+      | "p09b" -> P09.solve PartB ic
+      | "p10a" -> P10.solve PartA ic
+      | "p10b" -> P10.solve PartB ic
+      | "p11a" -> P11.solve PartA ic
+      | "p11b" -> P11.solve PartB ic
+      | "p12a" -> P12.solve PartA ic
+      | "p12b" -> P12.solve PartB ic
+      | "p13a" -> P13.solve PartA ic
+      | "p13b" -> P13.solve PartB ic
+      | "p14a" -> P14.solve PartA ic
+      | "p14b" -> P14.solve PartB ic
+      | "p15a" -> P15.solve PartA ic
+      | "p15b" -> P15.solve PartB ic
+      | _ -> assert false
+    with exc ->
+      close_in_noerr ic;
+      raise exc
+  in
+  (result, Sys.time () -. start_time)
+
+let run_case (ans : answer) =
   print_run_header ans;
-  check_result ans
-    (let ic = open_in ("../input/" ^ ans.fname) in
-     try
-       match ans.probname with
-       | "p01a" -> P01.solve PartA ic
-       | "p01b" -> P01.solve PartB ic
-       | "p02a" -> P02.solve PartA ic
-       | "p02b" -> P02.solve PartB ic
-       | "p03a" -> P03.solve PartA ic
-       | "p03b" -> P03.solve PartB ic
-       | "p04a" -> P04.solve PartA ic
-       | "p04b" -> P04.solve PartB ic
-       | "p05a" -> P05.solve PartA ic
-       | "p05b" -> P05.solve PartB ic
-       | "p06a" -> P06.solve PartA ic
-       | "p06b" -> P06.solve PartB ic
-       | "p07a" -> P07.solve PartA ic
-       | "p07b" -> P07.solve PartB ic
-       | "p08a" -> P08.solve PartA ic
-       | "p08b" -> P08.solve PartB ic
-       | "p09a" -> P09.solve PartA ic
-       | "p09b" -> P09.solve PartB ic
-       | "p10a" -> P10.solve PartA ic
-       | "p10b" -> P10.solve PartB ic
-       | "p11a" -> P11.solve PartA ic
-       | "p11b" -> P11.solve PartB ic
-       | "p12a" -> P12.solve PartA ic
-       | "p12b" -> P12.solve PartB ic
-       | "p13a" -> P13.solve PartA ic
-       | "p13b" -> P13.solve PartB ic
-       | "p14a" -> P14.solve PartA ic
-       | "p14b" -> P14.solve PartB ic
-       | _ -> assert false
-     with exc ->
-       close_in_noerr ic;
-       raise exc)
+  let result, time =
+    let ic = open_in ("../input/" ^ ans.fname) in
+    exec_solve ic ans.probname
+  in
+  check_result ans result time
 
 let () =
   let outcomes = List.map run_case cases_to_run in

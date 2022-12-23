@@ -145,3 +145,12 @@ p14a    p14.txt         828
 
 p14b    p14_test.txt    93
 p14b    p14.txt         25500
+
+#
+# Day 15
+#
+p15a    p15_test.txt    26
+p15a    p15.txt         5607466
+
+p15b    p15_test.txt    56000011
+p15b    p15.txt         12543202766584
