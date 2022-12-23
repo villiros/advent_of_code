@@ -136,3 +136,12 @@ p13a    p13.txt         5208
 
 p13b    p13_test.txt    140
 p13b    p13.txt         25792
+
+#
+# Day 14
+#
+p14a    p14_test.txt    24
+p14a    p14.txt         828
+
+p14b    p14_test.txt    93
+p14b    p14.txt         25500
