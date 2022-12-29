@@ -137,6 +137,8 @@ let exec_solve ic probname =
       | "p14b" -> P14.solve PartB ic
       | "p15a" -> P15.solve PartA ic
       | "p15b" -> P15.solve PartB ic
+      | "p16a" -> P16.solve PartA ic
+      | "p16b" -> P16.solve PartB ic
       | _ -> assert false
     with exc ->
       close_in_noerr ic;
@@ -150,7 +152,9 @@ let run_case (ans : answer) =
     let ic = open_in ("../input/" ^ ans.fname) in
     exec_solve ic ans.probname
   in
-  check_result ans result time
+  let res = check_result ans result time in
+  flush stdout;
+  res
 
 let () =
   let outcomes = List.map run_case cases_to_run in
