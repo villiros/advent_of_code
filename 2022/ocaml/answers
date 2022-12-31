@@ -163,3 +163,13 @@ p16a    p16.txt         1716
 
 p16b    p16_test.txt    1707
 p16b    p16.txt         2504
+
+#
+# Day 17
+#
+p17a    p17_test.txt    3068
+p17a    p17.txt         3171
+
+p17b    p17_test.txt    1514285714288
+p17b    p17.txt         1586627906921
+

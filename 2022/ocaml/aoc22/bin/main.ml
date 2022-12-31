@@ -139,6 +139,8 @@ let exec_solve ic probname =
       | "p15b" -> P15.solve PartB ic
       | "p16a" -> P16.solve PartA ic
       | "p16b" -> P16.solve PartB ic
+      | "p17a" -> P17.solve PartA ic
+      | "p17b" -> P17.solve PartB ic
       | _ -> assert false
     with exc ->
       close_in_noerr ic;
@@ -148,6 +150,7 @@ let exec_solve ic probname =
 
 let run_case (ans : answer) =
   print_run_header ans;
+  flush stdout;
   let result, time =
     let ic = open_in ("../input/" ^ ans.fname) in
     exec_solve ic ans.probname
