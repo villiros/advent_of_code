@@ -173,3 +173,11 @@ p17a    p17.txt         3171
 p17b    p17_test.txt    1514285714288
 p17b    p17.txt         1586627906921
 
+#
+# Day 18
+#
+p18a    p18_test.txt    64
+p18a    p18.txt         3526
+
+p18b    p18_test.txt    58
+p18b    p18.txt         2090
