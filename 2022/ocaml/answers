@@ -181,3 +181,11 @@ p18a    p18.txt         3526
 
 p18b    p18_test.txt    58
 p18b    p18.txt         2090
+
+#
+# Day 19
+#
+p19a    p19_test.txt    33
+p19a    p19.txt         790
+
+p19b    p19.txt         7350

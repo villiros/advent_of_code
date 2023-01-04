@@ -103,7 +103,7 @@ let check_result (ans : answer) result time =
 
 let exec_solve ic probname =
   let open Aoc22 in
-  let start_time = Sys.time () in
+  let start_time = Unix.gettimeofday () in
   let result =
     try
       match probname with
@@ -143,12 +143,14 @@ let exec_solve ic probname =
       | "p17b" -> P17.solve PartB ic
       | "p18a" -> P18.solve PartA ic
       | "p18b" -> P18.solve PartB ic
+      | "p19a" -> P19.solve PartA ic
+      | "p19b" -> P19.solve PartB ic
       | _ -> assert false
     with exc ->
       close_in_noerr ic;
       raise exc
   in
-  (result, Sys.time () -. start_time)
+  (result, Unix.gettimeofday () -. start_time)
 
 let run_case (ans : answer) =
   print_run_header ans;
