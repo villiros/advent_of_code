@@ -198,3 +198,12 @@ p20a    p20.txt         7584
 
 p20b    p20_test.txt    1623178306
 p20b    p20.txt         4907679608191
+
+#
+# Day 21
+#
+p21a    p21_test.txt    152
+p21a    p21.txt         66174565793494
+
+p21b    p21_test.txt    301
+p21b    p21.txt         3327575724809
