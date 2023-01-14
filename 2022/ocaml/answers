@@ -213,3 +213,12 @@ p21b    p21.txt         3327575724809
 #
 p22a    p22_test.txt    6032
 p22a    p22.txt         27436
+
+#
+# Day 23
+#
+p23a    p23_test.txt    110
+p23a    p23.txt         4114
+
+p23b    p23_test.txt    20
+p23b    p23.txt         970
