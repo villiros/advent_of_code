@@ -149,6 +149,8 @@ let exec_solve ic probname =
       | "p20b" -> P20.solve PartB ic
       | "p21a" -> P21.solve PartA ic
       | "p21b" -> P21.solve PartB ic
+      | "p22a" -> P22.solve PartA ic
+      | "p22b" -> P22.solve PartB ic
       | _ -> assert false
     with exc ->
       close_in_noerr ic;
