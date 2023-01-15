@@ -12,7 +12,6 @@ Simple generic and very naive implementation of Dijkstra search.
 
 This is actually quite slow, as it keeps distances in a hash table and
 (rather than using a matrix, which would've been appropriate for this problem).
-It also does a flood to fill up the queue and distances on start.
 
 Parametrized on a Node_id: a comparable identifier of a graph node.
 
@@ -39,40 +38,33 @@ module Dijkstra (Node_id : Set.OrderedType) = struct
 
   let inf = 1000000000
 
-  (* Find a path from start to target. May return inf if none exists. *)
   let find_shortest (start : t) (target : t) (neighbours : t -> t list) : int =
     let queue = ref Queue.empty in
     let dist = Hashtbl.create 100 in
-    let rec find_all_nodes n =
-      match Queue.find (inf, n) !queue with
-      | exception Not_found ->
-          queue := Queue.add (inf, n) !queue;
-          Hashtbl.replace dist n inf;
-          List.iter find_all_nodes (neighbours n)
-      | _ -> ()
-    in
-    List.iter find_all_nodes (neighbours start);
-    queue := Queue.add (0, start) !queue;
-    Hashtbl.replace dist start 0;
 
-    (* In part B not all nodes are connected to target. XXX: can skip the whole thing in this case. *)
-    (* assert (match Queue.find (inf, target) !queue with | exception Not_found -> false | _ -> true); *)
+    let get_dist v =
+      match Hashtbl.find_opt dist v with None -> inf | Some x -> x
+    in
+
+    Hashtbl.replace dist start 0;
+    queue := Queue.add (0, start) !queue;
+
     while not (Queue.is_empty !queue) do
       let udist, u = Queue.min_elt !queue in
       queue := Queue.remove (udist, u) !queue;
-      if u != target then
+      if u = target then queue := Queue.empty
+      else
+        let alt = get_dist u + 1 in
         List.iter
           (fun v ->
-            let alt = Hashtbl.find dist u + 1 in
-            let old_dist = Hashtbl.find dist v in
+            let old_dist = get_dist v in
             if alt < old_dist then (
               queue := Queue.remove (old_dist, v) !queue;
               queue := Queue.add (alt, v) !queue;
               Hashtbl.replace dist v alt))
           (neighbours u)
-      else queue := Queue.empty
     done;
-    match Hashtbl.find dist target with n -> n | exception Not_found -> inf
+    get_dist target
 end
 
 module Grid = struct
