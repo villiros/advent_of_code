@@ -232,3 +232,9 @@ p24a    p24.txt         314
 p24b    p24_test.txt    54
 p24b    p24.txt         896
 
+#
+# Day 25
+#
+p25a    p25_test.txt    "2=-1=0"
+p25a    p25.txt         "20-=0=02=-21=00-02=2"
+
