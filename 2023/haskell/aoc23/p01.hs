@@ -1,11 +1,13 @@
 import System.IO
-import Data.Char (isDigit)
-import Data.List (isPrefixOf)
+import Data.Char (isDigit, intToDigit, digitToInt)
+import Data.List (isPrefixOf, singleton)
 import Data.Maybe
 
+------------------------------------------------------------------------------------------------
 --
 -- Data reading
 --
+------------------------------------------------------------------------------------------------
 
 readData :: FilePath -> IO [String]
 readData fname = do
@@ -13,69 +15,70 @@ readData fname = do
         contents <- hGetContents handle
         return (lines contents)
 
+------------------------------------------------------------------------------------------------
 --
 -- Part A
 --
+------------------------------------------------------------------------------------------------
 
 getDigits xs =
     (findDigit xs) * 10 + (findDigit (reverse xs))
-  where findDigit = read . (:[]) . head . (dropWhile (not . isDigit))
+  where findDigit = digitToInt . head . (dropWhile (not . isDigit))
 
 solveA :: [String] -> Int
 solveA inlines =
     sum (map getDigits inlines)
 
+------------------------------------------------------------------------------------------------
 --
 -- Part B
 --
+------------------------------------------------------------------------------------------------
 
 digitMaps :: [(Int, String)]
 digitMaps =
-    [(1, "one"), (2, "two"), (3, "three"), (4, "four"), (5, "five"), (6, "six"),
-     (7, "seven"), (8, "eight"), (9, "nine")]
+    zip [1..9] ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
     ++
-    map (\i -> (i, show i)) [0..9]
+    map (\x -> (x, [intToDigit x])) [0..9]
 
 -- If prefix is a prefix of xs, return Just (result, xs after prefix)
 matchPrefix :: String -> (Int, String) -> Maybe (Int, String)
-matchPrefix xs (result, prefix)
-    | prefix `isPrefixOf` xs = Just (result, drop (length prefix) xs)
-matchPrefix _ _ = Nothing
-
--- Return the first Just in the list
-findJust [] = Nothing
-findJust (x:_)
-    | isJust x = x
-findJust (_:xs) = findJust xs 
+matchPrefix xs (result, prefix) =
+    if prefix `isPrefixOf` xs then  
+        Just (result, drop (length prefix) xs)
+    else
+        Nothing
 
 -- Find the first digit in the string xs and return (value, rest of string)
 matchDigit :: String -> Maybe (Int, String)
-matchDigit [] = Nothing
 matchDigit xs =
-    case findJust $ map (matchPrefix xs) digitMaps of
-        Nothing ->
-            matchDigit (tail xs)
-        x -> x
+    case mapMaybe (matchPrefix xs) digitMaps of
+        [] | xs /= [] -> matchDigit (tail xs)
+        [] -> Nothing
+        x:_ -> Just x
 
 -- Find a list of all digits in the string
-matchAllDigits :: String -> [Int] -> [Int]
-matchAllDigits [] acc = reverse acc
-matchAllDigits xs acc =
+matchAllDigits :: String -> [Int]
+matchAllDigits xs =
     case matchDigit xs of
-        Nothing -> reverse acc
-        Just (d, xxs) -> matchAllDigits xxs (d:acc)
+        Nothing -> []
+        Just (d, xxs) -> d : matchAllDigits xxs
 
 -- Get the "digit" of a string according to B's definition
 getDigitsBAll :: String -> Int
 getDigitsBAll xs =
-    let digits = matchAllDigits xs []
-    in
-        (head digits) * 10 + (last digits)
+    (head digits) * 10 + (last digits)
+    where digits = matchAllDigits xs
 
 solveB :: [String] -> Int
 solveB inlines =
     sum (map getDigitsBAll inlines)
 
+------------------------------------------------------------------------------------------------
+--
+-- main
+--
+------------------------------------------------------------------------------------------------
 
 main = do
     t <- readData "input/p01_test.txt"
