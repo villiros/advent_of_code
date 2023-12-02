@@ -6,3 +6,12 @@ p01a      p01.txt             53334
 
 p01b      p01_test2.txt        281
 p01b      p01.txt             52834
+
+#
+# Day 2
+#
+p02a    p02_test.txt        8
+p02a    p02.txt             2716
+
+p02b    p02_test.txt        2286
+p02b    p02.txt             72227
