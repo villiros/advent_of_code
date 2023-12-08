@@ -15,3 +15,12 @@ p02a    p02.txt             2716
 
 p02b    p02_test.txt        2286
 p02b    p02.txt             72227
+
+#
+# Day 3
+#
+p03a    p03_test.txt        4361
+p03a    p03.txt             519444
+
+p03b    p03_test.txt        467835
+p03b    p03.txt             74528807
