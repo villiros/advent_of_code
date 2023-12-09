@@ -1,9 +1,12 @@
+module P03 where
+    
 import System.IO
 import Data.Maybe
 import Data.List 
 import Data.Char (digitToInt, isDigit)
 import Control.Exception (assert)
 import Debug.Trace (trace)
+import Common (ProbResult(PRNum))
 
 -- CNumber / CSymbol are inputs. CNothing is input '.'
 -- Later the matrix will be parsed and horizontal runs of CNumber
@@ -72,10 +75,8 @@ makeMatrix inRows =
             assert ((all (\x -> (length x) == cols) m) && (length m) == rows) $
             Matrix {matrix = m, nrows = rows, ncols = cols}
 
-readData fname = do
-    handle <- openFile fname ReadMode
-    contents <- hGetContents handle
-    return $ makeMatrix $ lines contents
+readData lines =
+    makeMatrix lines
 
 ------------------------------------------------------------------------------------------------
 --
@@ -104,8 +105,8 @@ findPartNumbers2 mat =
     where isAdjacentSymbol pos = any isCSymbol [mat !?? i | i <- adjacents pos]
 
 solveA d =
-    let nums = findPartNumbers d in
-        sum $ map (\(CParsedNumber r _) -> r) nums
+    let nums = findPartNumbers (readData d) in
+        PRNum $ sum $ map (\(CParsedNumber r _) -> r) nums
 
 ------------------------------------------------------------------------------------------------
 --
@@ -123,23 +124,4 @@ findGearNumbers2 mat =
             | p <- gearPos]
     where adjacentNums pos = nub [c | p <- adjacents pos, c <- [mat !?? p], isParsedNumber c]
 
-solveB = findGearNumbers
-
-------------------------------------------------------------------------------------------------
---
--- main
---
-------------------------------------------------------------------------------------------------
-
-main = do
-    t <- readData "input/p03_test.txt"
-    putStr $ "Part A test " ++ show (solveA t) ++ "\n"
-
-    t <- readData "input/p03.txt"
-    putStr $ "Part A test " ++ show (solveA t) ++ "\n"
-
-    t <- readData "input/p03_test.txt"
-    putStr $ "Part A test " ++ show (solveB t) ++ "\n"
-
-    t <- readData "input/p03.txt"
-    putStr $ "Part A test " ++ show (solveB t) ++ "\n"
+solveB = PRNum . findGearNumbers . readData

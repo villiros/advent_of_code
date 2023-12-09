@@ -4,3 +4,5 @@
 secrets
 gmem.out
 2022/ocaml/aoc22/_build
+2023/haskell/dist-newstyle
+2023/.vscode/dist-cabal-repl
