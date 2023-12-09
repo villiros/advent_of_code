@@ -24,3 +24,12 @@ p03a    p03.txt             519444
 
 p03b    p03_test.txt        467835
 p03b    p03.txt             74528807
+
+#
+# Day 4
+#
+p04a    p04_test.txt        13
+p04a    p04.txt             21919
+
+p04b    p04_test.txt        30
+p04b    p04.txt             9881048

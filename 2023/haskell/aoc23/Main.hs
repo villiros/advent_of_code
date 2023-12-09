@@ -11,6 +11,7 @@ import Common
 import qualified P01 
 import qualified P02
 import qualified P03
+import qualified P04
 
 nameToSolve n = case n of
     "p01a" -> P01.solveA
@@ -19,6 +20,8 @@ nameToSolve n = case n of
     "p02b" -> P02.solveB
     "p03a" -> P03.solveA
     "p03b" -> P03.solveB
+    "p04a" -> P04.solveA
+    "p04b" -> P04.solveB
 
 data Answer =
     Answer {

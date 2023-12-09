@@ -13,12 +13,14 @@ extra-source-files: CHANGELOG.md
 
 executable aoc23
     main-is:          Main.hs
-    other-modules:    Common, P01, P02, P03
+    other-modules:    Common, P01, P02, P03, P04
     build-depends:
         base ^>=4.17.2.0,
         cmdargs,
-        time
+        time,
+        containers
         --aoc23
 
     hs-source-dirs:   aoc23
     default-language: Haskell2010
+
