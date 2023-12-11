@@ -33,3 +33,31 @@ p04a    p04.txt             21919
 
 p04b    p04_test.txt        30
 p04b    p04.txt             9881048
+
+#
+# Day 5
+#
+p05a    p05_test.txt        35
+p05a    p05.txt             3374647
+
+p05b    p05_test.txt        46
+p05b    p05.txt             6082852
+
+#
+# Day 6
+#
+p06a    p06_test.txt        288
+p06a    p06.txt             219849
+
+p06b    p06_test.txt        71503
+p06b    p06.txt             29432455
+
+#
+# Day 7
+#
+p07a    p07_test.txt        6440
+p07a    p07.txt             245794640
+
+p07b    p07_test.txt        5905
+p07b    p07.txt             247899149
+

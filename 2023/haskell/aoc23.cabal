@@ -13,7 +13,7 @@ extra-source-files: CHANGELOG.md
 
 executable aoc23
     main-is:          Main.hs
-    other-modules:    Common, P01, P02, P03, P04
+    other-modules:    Common, P01, P02, P03, P04, P05, P06, P07
     build-depends:
         base ^>=4.17.2.0,
         cmdargs,

@@ -14,7 +14,7 @@
             "startupFunc": "",
             "startupArgs": "",
             "stopOnEntry": false,
-            "mainArgs": "",
+            "mainArgs": "-pp05a",
             "ghciPrompt": "H>>= ",
             "ghciInitialPrompt": "> ",
             "ghciCmd": "cabal repl -w ghci-dap --repl-no-load --builddir=${workspaceFolder}/.vscode/dist-cabal-repl",
