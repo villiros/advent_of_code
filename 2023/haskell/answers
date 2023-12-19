@@ -61,3 +61,36 @@ p07a    p07.txt             245794640
 p07b    p07_test.txt        5905
 p07b    p07.txt             247899149
 
+#
+# Day 8
+#
+p08a    p08_test1.txt       2
+p08a    p08_test2.txt       6
+p08a    p08.txt             18157
+
+p08b    p08_testb.txt       6
+p08b    p08.txt             14299763833181
+
+#
+# Day 9
+#
+p09a    p09_test.txt        114
+p09a    p09.txt             1806615041
+
+p09b    p09_test.txt        2
+p09b    p09.txt             1211
+
+#
+# Day 10
+#
+p10a    p10_test1.txt       4
+p10a    p10_test2.txt       8
+p10a    p10.txt             6806
+
+p10b    p10_test3.txt       4
+p10b    p10_test4.txt       4
+p10b    p10_test5.txt       8
+p10b    p10_test6.txt       10
+p10b    p10.txt             449
+
+

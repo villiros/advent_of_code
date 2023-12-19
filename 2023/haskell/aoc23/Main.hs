@@ -5,7 +5,7 @@ import System.IO
 import System.Console.CmdArgs
 import Control.Exception (assert)
 import Text.Printf (printf)
-import Data.Time.Clock.POSIX (getPOSIXTime)
+import Data.Time.Clock.POSIX (getPOSIXTime, getCurrentTime)
 
 import Common
 import qualified P01 
@@ -15,6 +15,10 @@ import qualified P04
 import qualified P05
 import qualified P06
 import qualified P07
+import qualified P08
+import qualified P09
+import qualified P10
+import Data.Time (diffUTCTime)
 
 nameToSolve n = case n of
     "p01a" -> P01.solveA
@@ -31,6 +35,12 @@ nameToSolve n = case n of
     "p06b" -> P06.solveB
     "p07a" -> P07.solveA
     "p07b" -> P07.solveB
+    "p08a" -> P08.solveA
+    "p08b" -> P08.solveB
+    "p09a" -> P09.solveA
+    "p09b" -> P09.solveB
+    "p10a" -> P10.solveA
+    "p10b" -> P10.solveB
 
 
 data Answer =
@@ -84,10 +94,10 @@ runCase ans = do
     handle <- openFile ("input/" ++ (fname ans)) ReadMode
     contents <- hGetContents handle
 
-    startTime <- getPOSIXTime
+    startTime <- getCurrentTime
     let solveResult = (nameToSolve $ probname ans) (lines contents)
-    endTime <- getPOSIXTime
-    let timeTakenMs = round ((endTime - startTime) * 1000) :: Int
+    endTime <- getCurrentTime
+    let timeTakenMs = round ((diffUTCTime endTime startTime) * 1000) :: Int
 
     if not $ resultKnown ans then do
         printf " ???: Got %s Time: %i ms\n" (show solveResult) timeTakenMs

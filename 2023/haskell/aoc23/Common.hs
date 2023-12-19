@@ -17,6 +17,9 @@ observe a b =
 --    b
     traceShow (a, b) $ b
 
+observeIf shouldShow a b =
+    if shouldShow then  observe a b else b
+
 listSplit :: (a -> Bool) -> [a] -> [[a]]
 listSplit pred xs =
     case break pred xs of
@@ -24,4 +27,6 @@ listSplit pred xs =
         ([], []) -> []
         (x, []) -> [x]
         (x, _:xxs) -> x:listSplit pred xxs
-    
+
+flatten [] = []
+flatten (x:xs) = x ++ flatten xs
