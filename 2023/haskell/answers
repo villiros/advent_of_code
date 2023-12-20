@@ -93,4 +93,22 @@ p10b    p10_test5.txt       8
 p10b    p10_test6.txt       10
 p10b    p10.txt             449
 
+#
+# Day 11
+#
+p11a    p11_test.txt        374
+p11a    p11.txt             9734203
+
+p11b    p11_test.txt        82000210
+p11b    p11.txt             568914596391
+
+#
+# Day 12
+#
+p12a    p12_test.txt        21
+p12a    p12.txt             7716
+
+
+p12b    p12_test.txt        525152
+p12b    p12.txt             18716325559999
 

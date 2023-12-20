@@ -18,7 +18,9 @@ import qualified P07
 import qualified P08
 import qualified P09
 import qualified P10
+import qualified P11
 import Data.Time (diffUTCTime)
+import qualified P12
 
 nameToSolve n = case n of
     "p01a" -> P01.solveA
@@ -41,6 +43,10 @@ nameToSolve n = case n of
     "p09b" -> P09.solveB
     "p10a" -> P10.solveA
     "p10b" -> P10.solveB
+    "p11a" -> P11.solveA
+    "p11b" -> P11.solveB
+    "p12a" -> P12.solveA
+    "p12b" -> P12.solveB
 
 
 data Answer =
